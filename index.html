@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>国旗猜猜猜 - 测试你的地理知识 | Flag Quiz Game</title>
+    <meta name="description" content="一个设计精美的国旗竞猜游戏，挑战你对世界各国国旗的认识。选择大洲或挑战全世界，看看你能得多少分！A beautifully designed flag quiz game to test your knowledge.">
+    <meta name="keywords" content="国旗, 竞猜, 游戏, 地理, 世界, Apple风格, flag quiz, game, geography">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .main-container {
+            min-height: calc(100vh - 80px); /* Full height minus footer */
+        }
+        /* 按钮点击时的细微缩放效果 */
+        .btn-press {
+            transition: transform 0.1s ease;
+        }
+        .btn-press:active {
+            transform: scale(0.97);
+        }
+        /* 答案正确/错误时的动画 */
+        .correct-answer {
+            background-color: #22c55e !important; /* green-500 */
+            color: white !important;
+            border-color: #22c55e !important;
+        }
+        .wrong-answer {
+            background-color: #ef4444 !important; /* red-500 */
+            color: white !important;
+            border-color: #ef4444 !important;
+        }
+        .shake {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+            transform: translate3d(0, 0, 0);
+        }
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+        .lang-btn.active {
+            background-color: #3b82f6; /* blue-500 */
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div id="app-container" class="flex flex-col min-h-screen">
+        
+        <!-- Main Content -->
+        <main class="main-container flex-grow flex items-center justify-center p-4">
+            <div class="w-full max-w-lg mx-auto text-center">
+
+                <!-- Start Screen -->
+                <div id="start-screen">
+                    <h1 class="text-5xl md:text-6xl font-black text-gray-900 mb-4" data-lang-zh="国旗猜猜猜" data-lang-en="Flag Quiz">国旗猜猜猜</h1>
+                    <p class="text-lg text-gray-600 mb-10" data-lang-zh="测试你对世界各国国旗的了解程度。" data-lang-en="Test your knowledge of world flags.">测试你对世界各国国旗的了解程度。</p>
+                    <div class="space-y-4 mb-8">
+                        <button id="mode-world" class="btn-press w-full bg-blue-600 text-white font-semibold py-4 rounded-xl text-lg hover:bg-blue-700 transition-colors duration-300">
+                            <span data-lang-zh="世界模式" data-lang-en="World Mode">世界模式</span>
+                        </button>
+                        <button id="mode-continent" class="btn-press w-full bg-gray-200 text-gray-800 font-semibold py-4 rounded-xl text-lg hover:bg-gray-300 transition-colors duration-300">
+                             <span data-lang-zh="选择大洲" data-lang-en="Select Continent">选择大洲</span>
+                        </button>
+                    </div>
+                    <div id="lang-switcher" class="inline-flex items-center bg-gray-200 rounded-lg p-1">
+                        <button data-lang="zh" class="lang-btn active text-sm font-semibold py-1 px-4 rounded-md transition-colors">中文</button>
+                        <button data-lang="en" class="lang-btn text-sm font-semibold py-1 px-4 rounded-md transition-colors">English</button>
+                    </div>
+                </div>
+
+                <!-- Continent Selection Screen -->
+                <div id="continent-screen" class="hidden">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-8" data-lang-zh="选择一个大洲" data-lang-en="Select a Continent">选择一个大洲</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <button data-continent="Asia" class="continent-btn btn-press bg-white border border-gray-200 text-gray-800 font-semibold py-4 rounded-xl text-lg hover:bg-gray-100 transition-colors duration-300" data-lang-zh="亚洲" data-lang-en="Asia">亚洲</button>
+                        <button data-continent="Europe" class="continent-btn btn-press bg-white border border-gray-200 text-gray-800 font-semibold py-4 rounded-xl text-lg hover:bg-gray-100 transition-colors duration-300" data-lang-zh="欧洲" data-lang-en="Europe">欧洲</button>
+                        <button data-continent="Africa" class="continent-btn btn-press bg-white border border-gray-200 text-gray-800 font-semibold py-4 rounded-xl text-lg hover:bg-gray-100 transition-colors duration-300" data-lang-zh="非洲" data-lang-en="Africa">非洲</button>
+                        <button data-continent="North America" class="continent-btn btn-press bg-white border border-gray-200 text-gray-800 font-semibold py-4 rounded-xl text-lg hover:bg-gray-100 transition-colors duration-300" data-lang-zh="北美洲" data-lang-en="North America">北美洲</button>
+                        <button data-continent="South America" class="continent-btn btn-press bg-white border border-gray-200 text-gray-800 font-semibold py-4 rounded-xl text-lg hover:bg-gray-100 transition-colors duration-300" data-lang-zh="南美洲" data-lang-en="South America">南美洲</button>
+                        <button data-continent="Oceania" class="continent-btn btn-press bg-white border border-gray-200 text-gray-800 font-semibold py-4 rounded-xl text-lg hover:bg-gray-100 transition-colors duration-300" data-lang-zh="大洋洲" data-lang-en="Oceania">大洋洲</button>
+                    </div>
+                     <button id="back-to-start-1" class="text-gray-500 mt-8 hover:text-gray-700 transition-colors" data-lang-zh="返回" data-lang-en="Back">返回</button>
+                </div>
+
+                <!-- Game Screen -->
+                <div id="game-screen" class="hidden">
+                    <div class="mb-4 text-gray-500 font-semibold text-lg flex justify-between items-center">
+                       <span id="progress-text">1 / 10</span>
+                       <span id="score-text"></span>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-md mb-8">
+                        <img id="flag-image" src="" alt="国旗，请竞猜" class="w-48 h-auto mx-auto rounded-lg object-cover border border-gray-200 mb-6">
+                        <p id="question-text" class="text-xl text-gray-700 mb-8"></p>
+                        <div id="options-container" class="space-y-4">
+                            <!-- Options will be injected here by JS -->
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                         <button id="fifty-fifty" class="btn-press bg-white border-2 border-yellow-400 text-yellow-500 font-bold py-2 px-5 rounded-lg hover:bg-yellow-50 transition-colors">50:50</button>
+                         <button id="quit-game" class="text-gray-500 hover:text-red-500 transition-colors" data-lang-zh="结束游戏" data-lang-en="Quit Game">结束游戏</button>
+                    </div>
+                </div>
+
+                <!-- Results Screen -->
+                <div id="results-screen" class="hidden">
+                     <h2 class="text-4xl font-bold text-gray-900 mb-4" data-lang-zh="游戏结束！" data-lang-en="Game Over!">游戏结束！</h2>
+                     <p class="text-2xl text-gray-600 mb-2" data-lang-zh="你的最终得分是" data-lang-en="Your final score is">你的最终得分是</p>
+                     <p id="final-score" class="text-8xl font-black text-blue-600 mb-10">0</p>
+                     <div class="space-y-4">
+                         <button id="play-again" class="btn-press w-full bg-blue-600 text-white font-semibold py-4 rounded-xl text-lg hover:bg-blue-700 transition-colors duration-300">
+                            <span data-lang-zh="再玩一次" data-lang-en="Play Again">再玩一次</span>
+                        </button>
+                        <button id="back-to-start-2" class="btn-press w-full bg-gray-200 text-gray-800 font-semibold py-4 rounded-xl text-lg hover:bg-gray-300 transition-colors duration-300">
+                           <span data-lang-zh="返回主菜单" data-lang-en="Main Menu">返回主菜单</span>
+                        </button>
+                     </div>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="text-center p-5">
+            <p class="text-gray-400 text-sm" data-lang-zh="由 Gemini 设计和构建" data-lang-en="Designed & Built by Gemini">由 Gemini 设计和构建</p>
+        </footer>
+    </div>
+
+
+    <script>
+    // --- DATA: Countries Data ---
+    // A curated list of countries with their names (Chinese and English), ISO 3166-1 alpha-2 codes, and continents.
+    const countries = [
+        { name_zh: '阿富汗', name_en: 'Afghanistan', code: 'af', continent: 'Asia' },
+        { name_zh: '阿尔巴尼亚', name_en: 'Albania', code: 'al', continent: 'Europe' },
+        { name_zh: '阿尔及利亚', name_en: 'Algeria', code: 'dz', continent: 'Africa' },
+        { name_zh: '安道尔', name_en: 'Andorra', code: 'ad', continent: 'Europe' },
+        { name_zh: '安哥拉', name_en: 'Angola', code: 'ao', continent: 'Africa' },
+        { name_zh: '阿根廷', name_en: 'Argentina', code: 'ar', continent: 'South America' },
+        { name_zh: '亚美尼亚', name_en: 'Armenia', code: 'am', continent: 'Asia' },
+        { name_zh: '澳大利亚', name_en: 'Australia', code: 'au', continent: 'Oceania' },
+        { name_zh: '奥地利', name_en: 'Austria', code: 'at', continent: 'Europe' },
+        { name_zh: '阿塞拜疆', name_en: 'Azerbaijan', code: 'az', continent: 'Asia' },
+        { name_zh: '孟加拉国', name_en: 'Bangladesh', code: 'bd', continent: 'Asia' },
+        { name_zh: '白俄罗斯', name_en: 'Belarus', code: 'by', continent: 'Europe' },
+        { name_zh: '比利时', name_en: 'Belgium', code: 'be', continent: 'Europe' },
+        { name_zh: '不丹', name_en: 'Bhutan', code: 'bt', continent: 'Asia' },
+        { name_zh: '玻利维亚', name_en: 'Bolivia', code: 'bo', continent: 'South America' },
+        { name_zh: '波黑', name_en: 'Bosnia & Herzegovina', code: 'ba', continent: 'Europe' },
+        { name_zh: '博茨瓦纳', name_en: 'Botswana', code: 'bw', continent: 'Africa' },
+        { name_zh: '巴西', name_en: 'Brazil', code: 'br', continent: 'South America' },
+        { name_zh: '文莱', name_en: 'Brunei', code: 'bn', continent: 'Asia' },
+        { name_zh: '保加利亚', name_en: 'Bulgaria', code: 'bg', continent: 'Europe' },
+        { name_zh: '柬埔寨', name_en: 'Cambodia', code: 'kh', continent: 'Asia' },
+        { name_zh: '喀麦隆', name_en: 'Cameroon', code: 'cm', continent: 'Africa' },
+        { name_zh: '加拿大', name_en: 'Canada', code: 'ca', continent: 'North America' },
+        { name_zh: '中非共和国', name_en: 'Central African Republic', code: 'cf', continent: 'Africa' },
+        { name_zh: '乍得', name_en: 'Chad', code: 'td', continent: 'Africa' },
+        { name_zh: '智利', name_en: 'Chile', code: 'cl', continent: 'South America' },
+        { name_zh: '中国', name_en: 'China', code: 'cn', continent: 'Asia' },
+        { name_zh: '哥伦比亚', name_en: 'Colombia', code: 'co', continent: 'South America' },
+        { name_zh: '刚果（布）', name_en: 'Congo, Republic of the', code: 'cg', continent: 'Africa' },
+        { name_zh: '刚果（金）', name_en: 'Congo, Democratic Republic of the', code: 'cd', continent: 'Africa' },
+        { name_zh: '哥斯达黎加', name_en: 'Costa Rica', code: 'cr', continent: 'North America' },
+        { name_zh: '克罗地亚', name_en: 'Croatia', code: 'hr', continent: 'Europe' },
+        { name_zh: '古巴', name_en: 'Cuba', code: 'cu', continent: 'North America' },
+        { name_zh: '塞浦路斯', name_en: 'Cyprus', code: 'cy', continent: 'Asia' },
+        { name_zh: '捷克', name_en: 'Czech Republic', code: 'cz', continent: 'Europe' },
+        { name_zh: '丹麦', name_en: 'Denmark', code: 'dk', continent: 'Europe' },
+        { name_zh: '吉布提', name_en: 'Djibouti', code: 'dj', continent: 'Africa' },
+        { name_zh: '厄瓜多尔', name_en: 'Ecuador', code: 'ec', continent: 'South America' },
+        { name_zh: '埃及', name_en: 'Egypt', code: 'eg', continent: 'Africa' },
+        { name_zh: '萨尔瓦多', name_en: 'El Salvador', code: 'sv', continent: 'North America' },
+        { name_zh: '爱沙尼亚', name_en: 'Estonia', code: 'ee', continent: 'Europe' },
+        { name_zh: '埃塞俄比亚', name_en: 'Ethiopia', code: 'et', continent: 'Africa' },
+        { name_zh: '斐济', name_en: 'Fiji', code: 'fj', continent: 'Oceania' },
+        { name_zh: '芬兰', name_en: 'Finland', code: 'fi', continent: 'Europe' },
+        { name_zh: '法国', name_en: 'France', code: 'fr', continent: 'Europe' },
+        { name_zh: '格鲁吉亚', name_en: 'Georgia', code: 'ge', continent: 'Asia' },
+        { name_zh: '德国', name_en: 'Germany', code: 'de', continent: 'Europe' },
+        { name_zh: '加纳', name_en: 'Ghana', code: 'gh', continent: 'Africa' },
+        { name_zh: '希腊', name_en: 'Greece', code: 'gr', continent: 'Europe' },
+        { name_zh: '危地马拉', name_en: 'Guatemala', code: 'gt', continent: 'North America' },
+        { name_zh: '几内亚', name_en: 'Guinea', code: 'gn', continent: 'Africa' },
+        { name_zh: '海地', name_en: 'Haiti', code: 'ht', continent: 'North America' },
+        { name_zh: '洪都拉斯', name_en: 'Honduras', code: 'hn', continent: 'North America' },
+        { name_zh: '匈牙利', name_en: 'Hungary', code: 'hu', continent: 'Europe' },
+        { name_zh: '冰岛', name_en: 'Iceland', code: 'is', continent: 'Europe' },
+        { name_zh: '印度', name_en: 'India', code: 'in', continent: 'Asia' },
+        { name_zh: '印度尼西亚', name_en: 'Indonesia', code: 'id', continent: 'Asia' },
+        { name_zh: '伊朗', name_en: 'Iran', code: 'ir', continent: 'Asia' },
+        { name_zh: '伊拉克', name_en: 'Iraq', code: 'iq', continent: 'Asia' },
+        { name_zh: '爱尔兰', name_en: 'Ireland', code: 'ie', continent: 'Europe' },
+        { name_zh: '以色列', name_en: 'Israel', code: 'il', continent: 'Asia' },
+        { name_zh: '意大利', name_en: 'Italy', code: 'it', continent: 'Europe' },
+        { name_zh: '牙买加', name_en: 'Jamaica', code: 'jm', continent: 'North America' },
+        { name_zh: '日本', name_en: 'Japan', code: 'jp', continent: 'Asia' },
+        { name_zh: '约旦', name_en: 'Jordan', code: 'jo', continent: 'Asia' },
+        { name_zh: '哈萨克斯坦', name_en: 'Kazakhstan', code: 'kz', continent: 'Asia' },
+        { name_zh: '肯尼亚', name_en: 'Kenya', code: 'ke', continent: 'Africa' },
+        { name_zh: '科威特', name_en: 'Kuwait', code: 'kw', continent: 'Asia' },
+        { name_zh: '吉尔吉斯斯坦', name_en: 'Kyrgyzstan', code: 'kg', continent: 'Asia' },
+        { name_zh: '老挝', name_en: 'Laos', code: 'la', continent: 'Asia' },
+        { name_zh: '拉脱维亚', name_en: 'Latvia', code: 'lv', continent: 'Europe' },
+        { name_zh: '黎巴嫩', name_en: 'Lebanon', code: 'lb', continent: 'Asia' },
+        { name_zh: '利比里亚', name_en: 'Liberia', code: 'lr', continent: 'Africa' },
+        { name_zh: '利比亚', name_en: 'Libya', code: 'ly', continent: 'Africa' },
+        { name_zh: '立陶宛', name_en: 'Lithuania', code: 'lt', continent: 'Europe' },
+        { name_zh: '卢森堡', name_en: 'Luxembourg', code: 'lu', continent: 'Europe' },
+        { name_zh: '马达加斯加', name_en: 'Madagascar', code: 'mg', continent: 'Africa' },
+        { name_zh: '马来西亚', name_en: 'Malaysia', code: 'my', continent: 'Asia' },
+        { name_zh: '马尔代夫', name_en: 'Maldives', code: 'mv', continent: 'Asia' },
+        { name_zh: '马里', name_en: 'Mali', code: 'ml', continent: 'Africa' },
+        { name_zh: '马耳他', name_en: 'Malta', code: 'mt', continent: 'Europe' },
+        { name_zh: '墨西哥', name_en: 'Mexico', code: 'mx', continent: 'North America' },
+        { name_zh: '摩纳哥', name_en: 'Monaco', code: 'mc', continent: 'Europe' },
+        { name_zh: '蒙古', name_en: 'Mongolia', code: 'mn', continent: 'Asia' },
+        { name_zh: '黑山', name_en: 'Montenegro', code: 'me', continent: 'Europe' },
+        { name_zh: '摩洛哥', name_en: 'Morocco', code: 'ma', continent: 'Africa' },
+        { name_zh: '缅甸', name_en: 'Myanmar', code: 'mm', continent: 'Asia' },
+        { name_zh: '纳米比亚', name_en: 'Namibia', code: 'na', continent: 'Africa' },
+        { name_zh: '尼泊尔', name_en: 'Nepal', code: 'np', continent: 'Asia' },
+        { name_zh: '荷兰', name_en: 'Netherlands', code: 'nl', continent: 'Europe' },
+        { name_zh: '新西兰', name_en: 'New Zealand', code: 'nz', continent: 'Oceania' },
+        { name_zh: '尼日利亚', name_en: 'Nigeria', code: 'ng', continent: 'Africa' },
+        { name_zh: '朝鲜', name_en: 'North Korea', code: 'kp', continent: 'Asia' },
+        { name_zh: '北马其顿', name_en: 'North Macedonia', code: 'mk', continent: 'Europe' },
+        { name_zh: '挪威', name_en: 'Norway', code: 'no', continent: 'Europe' },
+        { name_zh: '阿曼', name_en: 'Oman', code: 'om', continent: 'Asia' },
+        { name_zh: '巴基斯坦', name_en: 'Pakistan', code: 'pk', continent: 'Asia' },
+        { name_zh: '巴拿马', name_en: 'Panama', code: 'pa', continent: 'North America' },
+        { name_zh: '巴布亚新几内亚', name_en: 'Papua New Guinea', code: 'pg', continent: 'Oceania' },
+        { name_zh: '巴拉圭', name_en: 'Paraguay', code: 'py', continent: 'South America' },
+        { name_zh: '秘鲁', name_en: 'Peru', code: 'pe', continent: 'South America' },
+        { name_zh: '菲律宾', name_en: 'Philippines', code: 'ph', continent: 'Asia' },
+        { name_zh: '波兰', name_en: 'Poland', code: 'pl', continent: 'Europe' },
+        { name_zh: '葡萄牙', name_en: 'Portugal', code: 'pt', continent: 'Europe' },
+        { name_zh: '卡塔尔', name_en: 'Qatar', code: 'qa', continent: 'Asia' },
+        { name_zh: '罗马尼亚', name_en: 'Romania', code: 'ro', continent: 'Europe' },
+        { name_zh: '俄罗斯', name_en: 'Russia', code: 'ru', continent: 'Europe' },
+        { name_zh: '卢旺达', name_en: 'Rwanda', code: 'rw', continent: 'Africa' },
+        { name_zh: '沙特阿拉伯', name_en: 'Saudi Arabia', code: 'sa', continent: 'Asia' },
+        { name_zh: '塞内加尔', name_en: 'Senegal', code: 'sn', continent: 'Africa' },
+        { name_zh: '塞尔维亚', name_en: 'Serbia', code: 'rs', continent: 'Europe' },
+        { name_zh: '新加坡', name_en: 'Singapore', code: 'sg', continent: 'Asia' },
+        { name_zh: '斯洛伐克', name_en: 'Slovakia', code: 'sk', continent: 'Europe' },
+        { name_zh: '斯洛文尼亚', name_en: 'Slovenia', code: 'si', continent: 'Europe' },
+        { name_zh: '索马里', name_en: 'Somalia', code: 'so', continent: 'Africa' },
+        { name_zh: '南非', name_en: 'South Africa', code: 'za', continent: 'Africa' },
+        { name_zh: '韩国', name_en: 'South Korea', code: 'kr', continent: 'Asia' },
+        { name_zh: '西班牙', name_en: 'Spain', code: 'es', continent: 'Europe' },
+        { name_zh: '斯里兰卡', name_en: 'Sri Lanka', code: 'lk', continent: 'Asia' },
+        { name_zh: '苏丹', name_en: 'Sudan', code: 'sd', continent: 'Africa' },
+        { name_zh: '瑞典', name_en: 'Sweden', code: 'se', continent: 'Europe' },
+        { name_zh: '瑞士', name_en: 'Switzerland', code: 'ch', continent: 'Europe' },
+        { name_zh: '叙利亚', name_en: 'Syria', code: 'sy', continent: 'Asia' },
+        { name_zh: '泰国', name_en: 'Thailand', code: 'th', continent: 'Asia' },
+        { name_zh: '突尼斯', name_en: 'Tunisia', code: 'tn', continent: 'Africa' },
+        { name_zh: '土耳其', name_en: 'Turkey', code: 'tr', continent: 'Asia' },
+        { name_zh: '乌干达', name_en: 'Uganda', code: 'ug', continent: 'Africa' },
+        { name_zh: '乌克兰', name_en: 'Ukraine', code: 'ua', continent: 'Europe' },
+        { name_zh: '阿联酋', name_en: 'United Arab Emirates', code: 'ae', continent: 'Asia' },
+        { name_zh: '英国', name_en: 'United Kingdom', code: 'gb', continent: 'Europe' },
+        { name_zh: '美国', name_en: 'United States', code: 'us', continent: 'North America' },
+        { name_zh: '乌拉圭', name_en: 'Uruguay', code: 'uy', continent: 'South America' },
+        { name_zh: '乌兹别克斯坦', name_en: 'Uzbekistan', code: 'uz', continent: 'Asia' },
+        { name_zh: '委内瑞拉', name_en: 'Venezuela', code: 've', continent: 'South America' },
+        { name_zh: '越南', name_en: 'Vietnam', code: 'vn', continent: 'Asia' },
+        { name_zh: '也门', name_en: 'Yemen', code: 'ye', continent: 'Asia' },
+        { name_zh: '赞比亚', name_en: 'Zambia', code: 'zm', continent: 'Africa' },
+        { name_zh: '津巴布韦', name_en: 'Zimbabwe', code: 'zw', continent: 'Africa' },
+    ];
+
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // --- DOM Elements ---
+        const screens = {
+            start: document.getElementById('start-screen'),
+            continent: document.getElementById('continent-screen'),
+            game: document.getElementById('game-screen'),
+            results: document.getElementById('results-screen'),
+        };
+        const flagImage = document.getElementById('flag-image');
+        const optionsContainer = document.getElementById('options-container');
+        const progressText = document.getElementById('progress-text');
+        const scoreText = document.getElementById('score-text');
+        const questionText = document.getElementById('question-text');
+        const finalScoreText = document.getElementById('final-score');
+        const fiftyFiftyBtn = document.getElementById('fifty-fifty');
+        const langSwitcher = document.getElementById('lang-switcher');
+
+        // --- Game State ---
+        let gameState = {};
+        
+        // --- Translation Data ---
+        const translations = {
+            score: { zh: '得分', en: 'Score' },
+            question: { zh: '这是哪个国家的国旗？', en: "Which country's flag is this?" },
+            flag_alt_guess: { zh: '国旗，请竞猜', en: 'Flag, please guess' },
+            flag_alt_reveal: { zh: '{country}的国旗', en: 'Flag of {country}' },
+        }
+
+        // --- Utility Functions ---
+        const shuffleArray = (array) => {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        };
+        
+        const showScreen = (screenName) => {
+            Object.values(screens).forEach(screen => screen.classList.add('hidden'));
+            screens[screenName].classList.remove('hidden');
+        };
+
+        const setLanguage = (lang) => {
+            gameState.language = lang;
+            document.documentElement.lang = lang; // Set lang for the whole document
+            
+            // Update active button style
+            langSwitcher.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === lang);
+            });
+
+            // Update all elements with data-lang attributes
+            document.querySelectorAll('[data-lang-zh]').forEach(el => {
+                const key = lang === 'zh' ? 'langZh' : 'langEn';
+                if (el.dataset[key]) {
+                    el.textContent = el.dataset[key];
+                }
+            });
+        };
+
+        // --- Game Logic ---
+        const resetGameState = () => {
+            const currentLang = gameState.language || 'zh';
+            gameState = {
+                questions: [],
+                currentQuestionIndex: 0,
+                score: 0,
+                gameMode: null, 
+                continent: null,
+                questionsTotal: 10,
+                fiftyFiftyUsed: false,
+                language: currentLang,
+            };
+        };
+        
+        const startGame = (mode, continent = null) => {
+            resetGameState();
+            gameState.gameMode = mode;
+            gameState.continent = continent;
+            
+            let sourceCountries = countries;
+            if (mode === 'continent' && continent) {
+                sourceCountries = countries.filter(c => c.continent === continent);
+            }
+            
+            const shuffled = shuffleArray([...sourceCountries]);
+            gameState.questions = shuffled.slice(0, Math.min(shuffled.length, gameState.questionsTotal)).map(correctCountry => {
+                let wrongOptions = [];
+                const otherCountries = sourceCountries.filter(c => c.code !== correctCountry.code);
+                const shuffledOthers = shuffleArray([...otherCountries]);
+                // Ensure we have at least 2 other options
+                if (shuffledOthers.length >= 2) {
+                    wrongOptions.push(shuffledOthers[0], shuffledOthers[1]);
+                } else { // Handle cases with very few countries in a continent
+                     const generalShuffled = shuffleArray([...countries].filter(c => c.code !== correctCountry.code));
+                     wrongOptions.push(generalShuffled[0], generalShuffled[1]);
+                }
+
+                return {
+                    correctAnswer: correctCountry,
+                    options: shuffleArray([correctCountry, ...wrongOptions])
+                };
+            });
+
+            if (gameState.questions.length < gameState.questionsTotal) {
+                 gameState.questionsTotal = gameState.questions.length;
+            }
+
+            fiftyFiftyBtn.disabled = false;
+            fiftyFiftyBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            fiftyFiftyBtn.classList.add('border-yellow-400', 'text-yellow-500', 'hover:bg-yellow-50');
+
+            displayQuestion();
+            showScreen('game');
+        };
+
+        const displayQuestion = () => {
+            if (gameState.currentQuestionIndex >= gameState.questionsTotal) {
+                endGame();
+                return;
+            }
+
+            const currentQuestion = gameState.questions[gameState.currentQuestionIndex];
+            const correctAnswer = currentQuestion.correctAnswer;
+            const lang = gameState.language;
+            const nameKey = lang === 'zh' ? 'name_zh' : 'name_en';
+
+            flagImage.src = `https://flagcdn.com/w320/${correctAnswer.code}.png`;
+            flagImage.alt = translations.flag_alt_guess[lang];
+
+            optionsContainer.innerHTML = '';
+            currentQuestion.options.forEach(option => {
+                const button = document.createElement('button');
+                button.textContent = option[nameKey];
+                button.dataset.countryCode = option.code;
+                button.className = 'btn-press w-full bg-white border border-gray-300 text-gray-700 font-medium py-3 rounded-lg text-md hover:bg-gray-100 hover:border-gray-400 transition-all duration-200';
+                button.addEventListener('click', handleAnswer);
+                optionsContainer.appendChild(button);
+            });
+
+            // Update UI text
+            progressText.textContent = `${gameState.currentQuestionIndex + 1} / ${gameState.questionsTotal}`;
+            scoreText.textContent = `${translations.score[lang]}: ${gameState.score}`;
+            questionText.textContent = translations.question[lang];
+        };
+        
+        const handleAnswer = (e) => {
+            const selectedButton = e.target;
+            const selectedCode = selectedButton.dataset.countryCode;
+            const currentQuestion = gameState.questions[gameState.currentQuestionIndex];
+            const correctCode = currentQuestion.correctAnswer.code;
+            const lang = gameState.language;
+            const nameKey = lang === 'zh' ? 'name_zh' : 'name_en';
+            
+            const allButtons = optionsContainer.querySelectorAll('button');
+            allButtons.forEach(btn => btn.disabled = true);
+            
+            if (selectedCode === correctCode) {
+                gameState.score += 10;
+                selectedButton.classList.add('correct-answer');
+                scoreText.textContent = `${translations.score[lang]}: ${gameState.score}`;
+            } else {
+                selectedButton.classList.add('wrong-answer');
+                selectedButton.classList.add('shake');
+                allButtons.forEach(btn => {
+                    if (btn.dataset.countryCode === correctCode) {
+                        btn.classList.add('correct-answer');
+                    }
+                });
+            }
+
+            const countryName = currentQuestion.correctAnswer[nameKey];
+            flagImage.alt = translations.flag_alt_reveal[lang].replace('{country}', countryName);
+
+            setTimeout(() => {
+                gameState.currentQuestionIndex++;
+                displayQuestion();
+            }, 1500);
+        };
+
+        const endGame = () => {
+            finalScoreText.textContent = gameState.score;
+            showScreen('results');
+        };
+
+        // --- Event Listeners ---
+        langSwitcher.addEventListener('click', (e) => {
+            if (e.target.matches('.lang-btn')) {
+                setLanguage(e.target.dataset.lang);
+            }
+        });
+
+        document.getElementById('mode-world').addEventListener('click', () => startGame('world'));
+        document.getElementById('mode-continent').addEventListener('click', () => showScreen('continent'));
+
+        document.querySelectorAll('.continent-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // Find the button itself, not a child span
+                const button = e.target.closest('.continent-btn');
+                startGame('continent', button.dataset.continent);
+            });
+        });
+
+        fiftyFiftyBtn.addEventListener('click', () => {
+            if (gameState.fiftyFiftyUsed) return;
+            gameState.fiftyFiftyUsed = true;
+            fiftyFiftyBtn.disabled = true;
+            fiftyFiftyBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            fiftyFiftyBtn.classList.remove('border-yellow-400', 'text-yellow-500', 'hover:bg-yellow-50');
+
+            const currentQuestion = gameState.questions[gameState.currentQuestionIndex];
+            const correctCode = currentQuestion.correctAnswer.code;
+            const options = Array.from(optionsContainer.children);
+            const wrongOptions = options.filter(opt => opt.dataset.countryCode !== correctCode);
+            
+            if(wrongOptions.length > 0) {
+                const toDisable = shuffleArray(wrongOptions)[0];
+                toDisable.disabled = true;
+                toDisable.classList.add('opacity-25', 'cursor-not-allowed');
+            }
+        });
+
+        document.getElementById('play-again').addEventListener('click', () => {
+             // Restart the game with the same mode but reset everything else
+             startGame(gameState.gameMode, gameState.continent);
+        });
+
+        document.getElementById('back-to-start-1').addEventListener('click', () => showScreen('start'));
+        document.getElementById('back-to-start-2').addEventListener('click', () => showScreen('start'));
+        document.getElementById('quit-game').addEventListener('click', endGame);
+
+
+        // --- Initial Load ---
+        resetGameState();
+        setLanguage('zh'); // Default to Chinese
+        showScreen('start');
+    });
+    </script>
+</body>
+</html>
