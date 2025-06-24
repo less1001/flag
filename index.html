@@ -1,39 +1,37 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO Meta Tags -->
-    <title>国旗猜猜猜 - 测试你的地理知识 | Flag Quiz Game</title>
-    <meta name="description" content="一个设计精美的国旗竞猜游戏，挑战你对世界各国国旗的认识。选择大洲或挑战全世界，看看你能得多少分！A beautifully designed flag quiz game to test your knowledge.">
-    <meta name="keywords" content="国旗, 竞猜, 游戏, 地理, 世界, Apple风格, flag quiz, game, geography">
+    <!-- SEO Meta Tags - Optimized for Google -->
+    <title>Flag Quiz Game - Guess the Country Flag | 国旗猜猜猜</title>
+    <meta name="description" content="Play the ultimate Flag Quiz Game! Test your geography knowledge by guessing the country flags. A fun, free, and educational game for all ages. | 玩有趣的国旗猜猜猜游戏。| 世界の国旗を当てる地理クイズゲーム。| Jouez au jeu de quiz sur les drapeaux. | Juega al test de banderas. | Jogue o Quiz de Bandeiras. | Игра-викторина по флагам. | 국기 퀴즈 게임. | Gioco di quiz sulla bandiera.">
+    <meta name="keywords" content="flag quiz, guess the flag, country flags, geography game, world flags, flag quiz online, 国旗クイズ, 猜国旗, quiz des drapeaux, test de banderas, quiz de bandeiras, викторина по флагам, 국기 퀴즈, quiz sulla bandiera, flag quiz, flaggquiz, educational game, geography quiz, online game">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Google Fonts: Inter -->
+    <!-- Google Fonts: Inter and Noto Sans JP for better Japanese rendering -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 
     <style>
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', 'Noto Sans JP', 'Noto Sans KR', sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
         .main-container {
             min-height: calc(100vh - 80px); /* Full height minus footer */
         }
-        /* 按钮点击时的细微缩放效果 */
         .btn-press {
             transition: transform 0.1s ease;
         }
         .btn-press:active {
             transform: scale(0.97);
         }
-        /* 答案正确/错误时的动画 */
         .correct-answer {
             background-color: #22c55e !important; /* green-500 */
             color: white !important;
@@ -54,9 +52,16 @@
             30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
             40%, 60% { transform: translate3d(4px, 0, 0); }
         }
-        .lang-btn.active {
-            background-color: #3b82f6; /* blue-500 */
-            color: white;
+        /* Custom select styling */
+        #lang-switcher-container select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%236b7280%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22/%3E%3C/svg%3E');
+            background-repeat: no-repeat;
+            background-position: right 0.7rem center;
+            background-size: .65em auto;
+            padding-right: 2.5rem;
         }
     </style>
 </head>
@@ -70,34 +75,44 @@
 
                 <!-- Start Screen -->
                 <div id="start-screen">
-                    <h1 class="text-5xl md:text-6xl font-black text-gray-900 mb-4" data-lang-zh="国旗猜猜猜" data-lang-en="Flag Quiz">国旗猜猜猜</h1>
-                    <p class="text-lg text-gray-600 mb-10" data-lang-zh="测试你对世界各国国旗的了解程度。" data-lang-en="Test your knowledge of world flags.">测试你对世界各国国旗的了解程度。</p>
+                    <h1 class="text-5xl md:text-6xl font-black text-gray-900 mb-4" data-i18n="title"></h1>
+                    <p class="text-lg text-gray-600 mb-10" data-i18n="subtitle"></p>
                     <div class="space-y-4 mb-8">
-                        <button id="mode-world" class="btn-press w-full bg-blue-600 text-white font-semibold py-4 rounded-xl text-lg hover:bg-blue-700 transition-colors duration-300">
-                            <span data-lang-zh="世界模式" data-lang-en="World Mode">世界模式</span>
-                        </button>
-                        <button id="mode-continent" class="btn-press w-full bg-gray-200 text-gray-800 font-semibold py-4 rounded-xl text-lg hover:bg-gray-300 transition-colors duration-300">
-                             <span data-lang-zh="选择大洲" data-lang-en="Select Continent">选择大洲</span>
-                        </button>
+                        <button id="mode-world" class="btn-press w-full bg-blue-600 text-white font-semibold py-4 rounded-xl text-lg hover:bg-blue-700 transition-colors duration-300" data-i18n="world_mode"></button>
+                        <button id="mode-continent" class="btn-press w-full bg-gray-200 text-gray-800 font-semibold py-4 rounded-xl text-lg hover:bg-gray-300 transition-colors duration-300" data-i18n="continent_mode"></button>
                     </div>
-                    <div id="lang-switcher" class="inline-flex items-center bg-gray-200 rounded-lg p-1">
-                        <button data-lang="zh" class="lang-btn active text-sm font-semibold py-1 px-4 rounded-md transition-colors">中文</button>
-                        <button data-lang="en" class="lang-btn text-sm font-semibold py-1 px-4 rounded-md transition-colors">English</button>
+                    <div id="lang-switcher-container" class="relative inline-block text-left">
+                         <select id="lang-switcher-select" class="block w-full pl-4 pr-10 py-2 text-base font-medium border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-lg bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors">
+                            <option value="en">English</option>
+                            <option value="zh">中文</option>
+                            <option value="es">Español</option>
+                            <option value="pt">Português</option>
+                            <option value="fr">Français</option>
+                            <option value="ja">日本語</option>
+                            <option value="ko">한국어</option>
+                            <option value="ru">Русский</option>
+                            <option value="it">Italiano</option>
+                            <option value="da">Dansk</option>
+                            <option value="no">Norsk</option>
+                            <option value="pl">Polski</option>
+                            <option value="sk">Slovenčina</option>
+                            <option value="sr">Српски</option>
+                         </select>
                     </div>
                 </div>
 
                 <!-- Continent Selection Screen -->
                 <div id="continent-screen" class="hidden">
-                    <h2 class="text-3xl font-bold text-gray-900 mb-8" data-lang-zh="选择一个大洲" data-lang-en="Select a Continent">选择一个大洲</h2>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-8" data-i18n="select_continent"></h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <button data-continent="Asia" class="continent-btn btn-press bg-white border border-gray-200 text-gray-800 font-semibold py-4 rounded-xl text-lg hover:bg-gray-100 transition-colors duration-300" data-lang-zh="亚洲" data-lang-en="Asia">亚洲</button>
-                        <button data-continent="Europe" class="continent-btn btn-press bg-white border border-gray-200 text-gray-800 font-semibold py-4 rounded-xl text-lg hover:bg-gray-100 transition-colors duration-300" data-lang-zh="欧洲" data-lang-en="Europe">欧洲</button>
-                        <button data-continent="Africa" class="continent-btn btn-press bg-white border border-gray-200 text-gray-800 font-semibold py-4 rounded-xl text-lg hover:bg-gray-100 transition-colors duration-300" data-lang-zh="非洲" data-lang-en="Africa">非洲</button>
-                        <button data-continent="North America" class="continent-btn btn-press bg-white border border-gray-200 text-gray-800 font-semibold py-4 rounded-xl text-lg hover:bg-gray-100 transition-colors duration-300" data-lang-zh="北美洲" data-lang-en="North America">北美洲</button>
-                        <button data-continent="South America" class="continent-btn btn-press bg-white border border-gray-200 text-gray-800 font-semibold py-4 rounded-xl text-lg hover:bg-gray-100 transition-colors duration-300" data-lang-zh="南美洲" data-lang-en="South America">南美洲</button>
-                        <button data-continent="Oceania" class="continent-btn btn-press bg-white border border-gray-200 text-gray-800 font-semibold py-4 rounded-xl text-lg hover:bg-gray-100 transition-colors duration-300" data-lang-zh="大洋洲" data-lang-en="Oceania">大洋洲</button>
+                        <button data-continent="Asia" class="continent-btn btn-press bg-white border border-gray-200 text-gray-800 font-semibold py-4 rounded-xl text-lg hover:bg-gray-100 transition-colors" data-i18n-continent="Asia"></button>
+                        <button data-continent="Europe" class="continent-btn btn-press bg-white border border-gray-200 text-gray-800 font-semibold py-4 rounded-xl text-lg hover:bg-gray-100 transition-colors" data-i18n-continent="Europe"></button>
+                        <button data-continent="Africa" class="continent-btn btn-press bg-white border border-gray-200 text-gray-800 font-semibold py-4 rounded-xl text-lg hover:bg-gray-100 transition-colors" data-i18n-continent="Africa"></button>
+                        <button data-continent="North America" class="continent-btn btn-press bg-white border border-gray-200 text-gray-800 font-semibold py-4 rounded-xl text-lg hover:bg-gray-100 transition-colors" data-i18n-continent="North America"></button>
+                        <button data-continent="South America" class="continent-btn btn-press bg-white border border-gray-200 text-gray-800 font-semibold py-4 rounded-xl text-lg hover:bg-gray-100 transition-colors" data-i18n-continent="South America"></button>
+                        <button data-continent="Oceania" class="continent-btn btn-press bg-white border border-gray-200 text-gray-800 font-semibold py-4 rounded-xl text-lg hover:bg-gray-100 transition-colors" data-i18n-continent="Oceania"></button>
                     </div>
-                     <button id="back-to-start-1" class="text-gray-500 mt-8 hover:text-gray-700 transition-colors" data-lang-zh="返回" data-lang-en="Back">返回</button>
+                     <button id="back-to-start-1" class="text-gray-500 mt-8 hover:text-gray-700 transition-colors" data-i18n="back"></button>
                 </div>
 
                 <!-- Game Screen -->
@@ -109,183 +124,204 @@
                     <div class="bg-white p-6 rounded-2xl shadow-md mb-8">
                         <img id="flag-image" src="" alt="国旗，请竞猜" class="w-48 h-auto mx-auto rounded-lg object-cover border border-gray-200 mb-6">
                         <p id="question-text" class="text-xl text-gray-700 mb-8"></p>
-                        <div id="options-container" class="space-y-4">
-                            <!-- Options will be injected here by JS -->
-                        </div>
+                        <div id="options-container" class="space-y-4"></div>
                     </div>
                     <div class="flex justify-between items-center">
                          <button id="fifty-fifty" class="btn-press bg-white border-2 border-yellow-400 text-yellow-500 font-bold py-2 px-5 rounded-lg hover:bg-yellow-50 transition-colors">50:50</button>
-                         <button id="quit-game" class="text-gray-500 hover:text-red-500 transition-colors" data-lang-zh="结束游戏" data-lang-en="Quit Game">结束游戏</button>
+                         <button id="quit-game" class="text-gray-500 hover:text-red-500 transition-colors" data-i18n="quit_game"></button>
                     </div>
                 </div>
 
                 <!-- Results Screen -->
                 <div id="results-screen" class="hidden">
-                     <h2 class="text-4xl font-bold text-gray-900 mb-4" data-lang-zh="游戏结束！" data-lang-en="Game Over!">游戏结束！</h2>
-                     <p class="text-2xl text-gray-600 mb-2" data-lang-zh="你的最终得分是" data-lang-en="Your final score is">你的最终得分是</p>
+                     <h2 class="text-4xl font-bold text-gray-900 mb-4" data-i18n="game_over"></h2>
+                     <p class="text-2xl text-gray-600 mb-2" data-i18n="final_score_is"></p>
                      <p id="final-score" class="text-8xl font-black text-blue-600 mb-10">0</p>
                      <div class="space-y-4">
-                         <button id="play-again" class="btn-press w-full bg-blue-600 text-white font-semibold py-4 rounded-xl text-lg hover:bg-blue-700 transition-colors duration-300">
-                            <span data-lang-zh="再玩一次" data-lang-en="Play Again">再玩一次</span>
-                        </button>
-                        <button id="back-to-start-2" class="btn-press w-full bg-gray-200 text-gray-800 font-semibold py-4 rounded-xl text-lg hover:bg-gray-300 transition-colors duration-300">
-                           <span data-lang-zh="返回主菜单" data-lang-en="Main Menu">返回主菜单</span>
-                        </button>
+                         <button id="play-again" class="btn-press w-full bg-blue-600 text-white font-semibold py-4 rounded-xl text-lg hover:bg-blue-700 transition-colors duration-300" data-i18n="play_again"></button>
+                        <button id="back-to-start-2" class="btn-press w-full bg-gray-200 text-gray-800 font-semibold py-4 rounded-xl text-lg hover:bg-gray-300 transition-colors" data-i18n="main_menu"></button>
                      </div>
                 </div>
-
             </div>
         </main>
 
         <!-- Footer -->
         <footer class="text-center p-5">
-            <p class="text-gray-400 text-sm" data-lang-zh="由 Gemini 设计和构建" data-lang-en="Designed & Built by Gemini">由 Gemini 设计和构建</p>
+            <p class="text-gray-400 text-sm" data-i18n="footer"></p>
         </footer>
     </div>
 
 
     <script>
-    // --- DATA: Countries Data ---
-    // A curated list of countries with their names (Chinese and English), ISO 3166-1 alpha-2 codes, and continents.
+    // --- DATA ---
+    const i18n = {
+        title: { en: 'Flag Quiz', zh: '国旗猜猜猜', ja: '国旗クイズ', fr: 'Quiz des Drapeaux', es: 'Test de Banderas', pt: 'Quiz de Bandeiras', ru: 'Викторина по флагам', ko: '국기 퀴즈', it: 'Quiz Sulle Bandiere', da: 'Flagquiz', no: 'Flaggquiz', pl: 'Quiz Flagowy', sk: 'Vlajkový Kvíz', sr: 'Квиз о заставама' },
+        subtitle: { en: 'Test your knowledge of world flags.', zh: '测试你对世界各国国旗的了解程度。', ja: '世界の国旗の知識を試してみましょう。', fr: 'Testez vos connaissances sur les drapeaux du monde.', es: 'Pon a prueba tu conocimiento de las banderas del mundo.', pt: 'Teste seus conhecimentos sobre as bandeiras do mundo.', ru: 'Проверьте свои знания флагов мира.', ko: '세계 국기에 대한 지식을 시험해 보세요.', it: 'Metti alla prova la tua conoscenza delle bandiere del mondo.', da: 'Test din viden om verdens flag.', no: 'Test kunnskapen din om verdensflagg.', pl: 'Sprawdź swoją wiedzę na temat flag świata.', sk: 'Otestujte si svoje znalosti o svetových vlajkách.', sr: 'Тестирајте своје знање о светским заставама.' },
+        world_mode: { en: 'World Mode', zh: '世界模式', ja: 'ワールドモード', fr: 'Mode Mondial', es: 'Modo Mundial', pt: 'Modo Mundial', ru: 'Мировой режим', ko: '월드 모드', it: 'Modalità Mondo', da: 'Verdens-tilstand', no: 'Verdensmodus', pl: 'Tryb Światowy', sk: 'Svetový režim', sr: 'Светски режим' },
+        continent_mode: { en: 'Select Continent', zh: '选择大洲', ja: '大陸を選択', fr: 'Choisir un Continent', es: 'Seleccionar Continente', pt: 'Selecionar Continente', ru: 'Выбрать континент', ko: '대륙 선택', it: 'Seleziona Continente', da: 'Vælg kontinent', no: 'Velg kontinent', pl: 'Wybierz Kontynent', sk: 'Vyberte kontinent', sr: 'Изаберите континент' },
+        select_continent: { en: 'Select a Continent', zh: '选择一个大洲', ja: '大陸を選択してください', fr: 'Sélectionnez un continent', es: 'Selecciona un continente', pt: 'Selecione um continente', ru: 'Выберите континент', ko: '대륙을 선택하세요', it: 'Seleziona un continente', da: 'Vælg et kontinent', no: 'Velg et kontinent', pl: 'Wybierz kontynent', sk: 'Vyberte si kontinent', sr: 'Изаберите континент' },
+        back: { en: 'Back', zh: '返回', ja: '戻る', fr: 'Retour', es: 'Volver', pt: 'Voltar', ru: 'Назад', ko: '뒤로', it: 'Indietro', da: 'Tilbage', no: 'Tilbake', pl: 'Powrót', sk: 'Späť', sr: 'Назад' },
+        score: { en: 'Score', zh: '得分', ja: 'スコア', fr: 'Score', es: 'Puntuación', pt: 'Pontuação', ru: 'Счет', ko: '점수', it: 'Punteggio', da: 'Score', no: 'Poeng', pl: 'Wynik', sk: 'Skóre', sr: 'Резултат' },
+        question: { en: "Which country's flag is this?", zh: '这是哪个国家的国旗？', ja: 'これはどこの国の国旗ですか？', fr: 'De quel pays est ce drapeau ?', es: '¿De qué país es esta bandera?', pt: 'De que país é esta bandeira?', ru: 'Чей это флаг?', ko: '이것은 어느 나라의 국기입니까?', it: 'Di quale paese è questa bandiera?', da: 'Hvilket lands flag er dette?', no: 'Hvilket lands flagg er dette?', pl: 'Czyja to flaga?', sk: 'Čia je toto vlajka?', sr: 'Чија је ово застава?' },
+        quit_game: { en: 'Quit Game', zh: '结束游戏', ja: 'ゲーム終了', fr: 'Quitter le jeu', es: 'Salir del juego', pt: 'Sair do Jogo', ru: 'Выйти из игры', ko: '게임 종료', it: 'Esci dal gioco', da: 'Afslut spil', no: 'Avslutt spill', pl: 'Zakończ grę', sk: 'Ukončiť hru', sr: 'Изађи из игре' },
+        game_over: { en: 'Game Over!', zh: '游戏结束！', ja: 'ゲームオーバー！', fr: 'Jeu Terminé !', es: '¡Juego Terminado!', pt: 'Fim de Jogo!', ru: 'Игра окончена!', ko: '게임 종료!', it: 'Fine del gioco!', da: 'Spillet er slut!', no: 'Spillet er over!', pl: 'Koniec gry!', sk: 'Koniec hry!', sr: 'Игра је готова!' },
+        final_score_is: { en: 'Your final score is', zh: '你的最终得分是', ja: '最終スコア', fr: 'Votre score final est', es: 'Tu puntuación final es', pt: 'Sua pontuação final é', ru: 'Ваш итоговый счет', ko: '최종 점수', it: 'Il tuo punteggio finale è', da: 'Din endelige score er', no: 'Din endelige poengsum er', pl: 'Twój końcowy wynik to', sk: 'Vaše konečné skóre je', sr: 'Ваш коначан резултат је' },
+        play_again: { en: 'Play Again', zh: '再玩一次', ja: 'もう一度プレイ', fr: 'Rejouer', es: 'Jugar de Nuevo', pt: 'Jogar Novamente', ru: 'Играть снова', ko: '다시 플레이', it: 'Gioca di nuovo', da: 'Spil igen', no: 'Spill igjen', pl: 'Zagraj ponownie', sk: 'Hrať znova', sr: 'Играј поново' },
+        main_menu: { en: 'Main Menu', zh: '返回主菜单', ja: 'メインメニューへ', fr: 'Menu Principal', es: 'Menú Principal', pt: 'Menu Principal', ru: 'Главное меню', ko: '메인 메뉴', it: 'Menu principale', da: 'Hovedmenu', no: 'Hovedmeny', pl: 'Menu główne', sk: 'Hlavné menu', sr: 'Главни мени' },
+        footer: { en: 'Designed & Built by Gemini', zh: '由 Gemini 设计和构建', ja: 'Geminiによって設計・構築されました', fr: 'Conçu et réalisé par Gemini', es: 'Diseñado y construido por Gemini', pt: 'Projetado e construído pela Gemini', ru: 'Разработано и создано Gemini', ko: 'Gemini 제작', it: 'Progettato e costruito da Gemini', da: 'Designet & bygget af Gemini', no: 'Designet og bygget av Gemini', pl: 'Zaprojektowane i zbudowane przez Gemini', sk: 'Navrhnuté a postavené spoločnosťou Gemini', sr: 'Дизајнирао и направио Gemini' },
+        flag_alt_guess: { en: 'Flag, please guess', zh: '国旗，请竞猜', ja: '国旗、当ててください', fr: 'Drapeau, veuillez deviner', es: 'Bandera, adivina por favor', pt: 'Bandeira, por favor adivinhe', ru: 'Флаг, пожалуйста, угадайте', ko: '국기, 맞춰보세요', it: 'Bandiera, indovina per favore', da: 'Flag, gæt venligst', no: 'Flagg, vennligst gjett', pl: 'Flaga, proszę zgadnąć', sk: 'Vlajka, prosím hádajte', sr: 'Застава, молим погодите' },
+        flag_alt_reveal: { en: 'Flag of {country}', zh: '{country}的国旗', ja: '{country}の国旗', fr: 'Drapeau de {country}', es: 'Bandera de {country}', pt: 'Bandeira de {country}', ru: 'Флаг {country}', ko: '{country}의 국기', it: 'Bandiera di {country}', da: 'Flag af {country}', no: 'Flagg av {country}', pl: 'Flaga {country}', sk: 'Vlajka {country}', sr: 'Застава {country}' },
+        continents: {
+            'Asia': { en: 'Asia', zh: '亚洲', ja: 'アジア', fr: 'Asie', es: 'Asia', pt: 'Ásia', ru: 'Азия', ko: '아시아', it: 'Asia', da: 'Asien', no: 'Asia', pl: 'Azja', sk: 'Ázia', sr: 'Азија' },
+            'Europe': { en: 'Europe', zh: '欧洲', ja: 'ヨーロッパ', fr: 'Europe', es: 'Europa', pt: 'Europa', ru: 'Европа', ko: '유럽', it: 'Europa', da: 'Europa', no: 'Europa', pl: 'Europa', sk: 'Európa', sr: 'Европа' },
+            'Africa': { en: 'Africa', zh: '非洲', ja: 'アフリカ', fr: 'Afrique', es: 'África', pt: 'África', ru: 'Африка', ko: '아프리카', it: 'Africa', da: 'Afrika', no: 'Afrika', pl: 'Afryka', sk: 'Afrika', sr: 'Африка' },
+            'North America': { en: 'North America', zh: '北美洲', ja: '北アメリカ', fr: 'Amérique du Nord', es: 'América del Norte', pt: 'América do Norte', ru: 'Северная Америка', ko: '북아메리카', it: 'Nord America', da: 'Nordamerika', no: 'Nord-Amerika', pl: 'Ameryka Północna', sk: 'Severná Amerika', sr: 'Северна Америка' },
+            'South America': { en: 'South America', zh: '南美洲', ja: '南アメリカ', fr: 'Amérique du Sud', es: 'América del Sur', pt: 'América do Sul', ru: 'Южная Америка', ko: '남아메리카', it: 'Sud America', da: 'Sydamerika', no: 'Sør-Amerika', pl: 'Ameryka Południowa', sk: 'Južná Amerika', sr: 'Јужна Америка' },
+            'Oceania': { en: 'Oceania', zh: '大洋洲', ja: 'オセアニア', fr: 'Océanie', es: 'Oceanía', pt: 'Oceânia', ru: 'Океания', ko: '오세아니아', it: 'Oceania', da: 'Oceanien', no: 'Oseania', pl: 'Oceania', sk: 'Oceánia', sr: 'Океанија' },
+        }
+    };
+    
+    // UPDATED: Comprehensive list of countries with new languages
     const countries = [
-        { name_zh: '阿富汗', name_en: 'Afghanistan', code: 'af', continent: 'Asia' },
-        { name_zh: '阿尔巴尼亚', name_en: 'Albania', code: 'al', continent: 'Europe' },
-        { name_zh: '阿尔及利亚', name_en: 'Algeria', code: 'dz', continent: 'Africa' },
-        { name_zh: '安道尔', name_en: 'Andorra', code: 'ad', continent: 'Europe' },
-        { name_zh: '安哥拉', name_en: 'Angola', code: 'ao', continent: 'Africa' },
-        { name_zh: '阿根廷', name_en: 'Argentina', code: 'ar', continent: 'South America' },
-        { name_zh: '亚美尼亚', name_en: 'Armenia', code: 'am', continent: 'Asia' },
-        { name_zh: '澳大利亚', name_en: 'Australia', code: 'au', continent: 'Oceania' },
-        { name_zh: '奥地利', name_en: 'Austria', code: 'at', continent: 'Europe' },
-        { name_zh: '阿塞拜疆', name_en: 'Azerbaijan', code: 'az', continent: 'Asia' },
-        { name_zh: '孟加拉国', name_en: 'Bangladesh', code: 'bd', continent: 'Asia' },
-        { name_zh: '白俄罗斯', name_en: 'Belarus', code: 'by', continent: 'Europe' },
-        { name_zh: '比利时', name_en: 'Belgium', code: 'be', continent: 'Europe' },
-        { name_zh: '不丹', name_en: 'Bhutan', code: 'bt', continent: 'Asia' },
-        { name_zh: '玻利维亚', name_en: 'Bolivia', code: 'bo', continent: 'South America' },
-        { name_zh: '波黑', name_en: 'Bosnia & Herzegovina', code: 'ba', continent: 'Europe' },
-        { name_zh: '博茨瓦纳', name_en: 'Botswana', code: 'bw', continent: 'Africa' },
-        { name_zh: '巴西', name_en: 'Brazil', code: 'br', continent: 'South America' },
-        { name_zh: '文莱', name_en: 'Brunei', code: 'bn', continent: 'Asia' },
-        { name_zh: '保加利亚', name_en: 'Bulgaria', code: 'bg', continent: 'Europe' },
-        { name_zh: '柬埔寨', name_en: 'Cambodia', code: 'kh', continent: 'Asia' },
-        { name_zh: '喀麦隆', name_en: 'Cameroon', code: 'cm', continent: 'Africa' },
-        { name_zh: '加拿大', name_en: 'Canada', code: 'ca', continent: 'North America' },
-        { name_zh: '中非共和国', name_en: 'Central African Republic', code: 'cf', continent: 'Africa' },
-        { name_zh: '乍得', name_en: 'Chad', code: 'td', continent: 'Africa' },
-        { name_zh: '智利', name_en: 'Chile', code: 'cl', continent: 'South America' },
-        { name_zh: '中国', name_en: 'China', code: 'cn', continent: 'Asia' },
-        { name_zh: '哥伦比亚', name_en: 'Colombia', code: 'co', continent: 'South America' },
-        { name_zh: '刚果（布）', name_en: 'Congo, Republic of the', code: 'cg', continent: 'Africa' },
-        { name_zh: '刚果（金）', name_en: 'Congo, Democratic Republic of the', code: 'cd', continent: 'Africa' },
-        { name_zh: '哥斯达黎加', name_en: 'Costa Rica', code: 'cr', continent: 'North America' },
-        { name_zh: '克罗地亚', name_en: 'Croatia', code: 'hr', continent: 'Europe' },
-        { name_zh: '古巴', name_en: 'Cuba', code: 'cu', continent: 'North America' },
-        { name_zh: '塞浦路斯', name_en: 'Cyprus', code: 'cy', continent: 'Asia' },
-        { name_zh: '捷克', name_en: 'Czech Republic', code: 'cz', continent: 'Europe' },
-        { name_zh: '丹麦', name_en: 'Denmark', code: 'dk', continent: 'Europe' },
-        { name_zh: '吉布提', name_en: 'Djibouti', code: 'dj', continent: 'Africa' },
-        { name_zh: '厄瓜多尔', name_en: 'Ecuador', code: 'ec', continent: 'South America' },
-        { name_zh: '埃及', name_en: 'Egypt', code: 'eg', continent: 'Africa' },
-        { name_zh: '萨尔瓦多', name_en: 'El Salvador', code: 'sv', continent: 'North America' },
-        { name_zh: '爱沙尼亚', name_en: 'Estonia', code: 'ee', continent: 'Europe' },
-        { name_zh: '埃塞俄比亚', name_en: 'Ethiopia', code: 'et', continent: 'Africa' },
-        { name_zh: '斐济', name_en: 'Fiji', code: 'fj', continent: 'Oceania' },
-        { name_zh: '芬兰', name_en: 'Finland', code: 'fi', continent: 'Europe' },
-        { name_zh: '法国', name_en: 'France', code: 'fr', continent: 'Europe' },
-        { name_zh: '格鲁吉亚', name_en: 'Georgia', code: 'ge', continent: 'Asia' },
-        { name_zh: '德国', name_en: 'Germany', code: 'de', continent: 'Europe' },
-        { name_zh: '加纳', name_en: 'Ghana', code: 'gh', continent: 'Africa' },
-        { name_zh: '希腊', name_en: 'Greece', code: 'gr', continent: 'Europe' },
-        { name_zh: '危地马拉', name_en: 'Guatemala', code: 'gt', continent: 'North America' },
-        { name_zh: '几内亚', name_en: 'Guinea', code: 'gn', continent: 'Africa' },
-        { name_zh: '海地', name_en: 'Haiti', code: 'ht', continent: 'North America' },
-        { name_zh: '洪都拉斯', name_en: 'Honduras', code: 'hn', continent: 'North America' },
-        { name_zh: '匈牙利', name_en: 'Hungary', code: 'hu', continent: 'Europe' },
-        { name_zh: '冰岛', name_en: 'Iceland', code: 'is', continent: 'Europe' },
-        { name_zh: '印度', name_en: 'India', code: 'in', continent: 'Asia' },
-        { name_zh: '印度尼西亚', name_en: 'Indonesia', code: 'id', continent: 'Asia' },
-        { name_zh: '伊朗', name_en: 'Iran', code: 'ir', continent: 'Asia' },
-        { name_zh: '伊拉克', name_en: 'Iraq', code: 'iq', continent: 'Asia' },
-        { name_zh: '爱尔兰', name_en: 'Ireland', code: 'ie', continent: 'Europe' },
-        { name_zh: '以色列', name_en: 'Israel', code: 'il', continent: 'Asia' },
-        { name_zh: '意大利', name_en: 'Italy', code: 'it', continent: 'Europe' },
-        { name_zh: '牙买加', name_en: 'Jamaica', code: 'jm', continent: 'North America' },
-        { name_zh: '日本', name_en: 'Japan', code: 'jp', continent: 'Asia' },
-        { name_zh: '约旦', name_en: 'Jordan', code: 'jo', continent: 'Asia' },
-        { name_zh: '哈萨克斯坦', name_en: 'Kazakhstan', code: 'kz', continent: 'Asia' },
-        { name_zh: '肯尼亚', name_en: 'Kenya', code: 'ke', continent: 'Africa' },
-        { name_zh: '科威特', name_en: 'Kuwait', code: 'kw', continent: 'Asia' },
-        { name_zh: '吉尔吉斯斯坦', name_en: 'Kyrgyzstan', code: 'kg', continent: 'Asia' },
-        { name_zh: '老挝', name_en: 'Laos', code: 'la', continent: 'Asia' },
-        { name_zh: '拉脱维亚', name_en: 'Latvia', code: 'lv', continent: 'Europe' },
-        { name_zh: '黎巴嫩', name_en: 'Lebanon', code: 'lb', continent: 'Asia' },
-        { name_zh: '利比里亚', name_en: 'Liberia', code: 'lr', continent: 'Africa' },
-        { name_zh: '利比亚', name_en: 'Libya', code: 'ly', continent: 'Africa' },
-        { name_zh: '立陶宛', name_en: 'Lithuania', code: 'lt', continent: 'Europe' },
-        { name_zh: '卢森堡', name_en: 'Luxembourg', code: 'lu', continent: 'Europe' },
-        { name_zh: '马达加斯加', name_en: 'Madagascar', code: 'mg', continent: 'Africa' },
-        { name_zh: '马来西亚', name_en: 'Malaysia', code: 'my', continent: 'Asia' },
-        { name_zh: '马尔代夫', name_en: 'Maldives', code: 'mv', continent: 'Asia' },
-        { name_zh: '马里', name_en: 'Mali', code: 'ml', continent: 'Africa' },
-        { name_zh: '马耳他', name_en: 'Malta', code: 'mt', continent: 'Europe' },
-        { name_zh: '墨西哥', name_en: 'Mexico', code: 'mx', continent: 'North America' },
-        { name_zh: '摩纳哥', name_en: 'Monaco', code: 'mc', continent: 'Europe' },
-        { name_zh: '蒙古', name_en: 'Mongolia', code: 'mn', continent: 'Asia' },
-        { name_zh: '黑山', name_en: 'Montenegro', code: 'me', continent: 'Europe' },
-        { name_zh: '摩洛哥', name_en: 'Morocco', code: 'ma', continent: 'Africa' },
-        { name_zh: '缅甸', name_en: 'Myanmar', code: 'mm', continent: 'Asia' },
-        { name_zh: '纳米比亚', name_en: 'Namibia', code: 'na', continent: 'Africa' },
-        { name_zh: '尼泊尔', name_en: 'Nepal', code: 'np', continent: 'Asia' },
-        { name_zh: '荷兰', name_en: 'Netherlands', code: 'nl', continent: 'Europe' },
-        { name_zh: '新西兰', name_en: 'New Zealand', code: 'nz', continent: 'Oceania' },
-        { name_zh: '尼日利亚', name_en: 'Nigeria', code: 'ng', continent: 'Africa' },
-        { name_zh: '朝鲜', name_en: 'North Korea', code: 'kp', continent: 'Asia' },
-        { name_zh: '北马其顿', name_en: 'North Macedonia', code: 'mk', continent: 'Europe' },
-        { name_zh: '挪威', name_en: 'Norway', code: 'no', continent: 'Europe' },
-        { name_zh: '阿曼', name_en: 'Oman', code: 'om', continent: 'Asia' },
-        { name_zh: '巴基斯坦', name_en: 'Pakistan', code: 'pk', continent: 'Asia' },
-        { name_zh: '巴拿马', name_en: 'Panama', code: 'pa', continent: 'North America' },
-        { name_zh: '巴布亚新几内亚', name_en: 'Papua New Guinea', code: 'pg', continent: 'Oceania' },
-        { name_zh: '巴拉圭', name_en: 'Paraguay', code: 'py', continent: 'South America' },
-        { name_zh: '秘鲁', name_en: 'Peru', code: 'pe', continent: 'South America' },
-        { name_zh: '菲律宾', name_en: 'Philippines', code: 'ph', continent: 'Asia' },
-        { name_zh: '波兰', name_en: 'Poland', code: 'pl', continent: 'Europe' },
-        { name_zh: '葡萄牙', name_en: 'Portugal', code: 'pt', continent: 'Europe' },
-        { name_zh: '卡塔尔', name_en: 'Qatar', code: 'qa', continent: 'Asia' },
-        { name_zh: '罗马尼亚', name_en: 'Romania', code: 'ro', continent: 'Europe' },
-        { name_zh: '俄罗斯', name_en: 'Russia', code: 'ru', continent: 'Europe' },
-        { name_zh: '卢旺达', name_en: 'Rwanda', code: 'rw', continent: 'Africa' },
-        { name_zh: '沙特阿拉伯', name_en: 'Saudi Arabia', code: 'sa', continent: 'Asia' },
-        { name_zh: '塞内加尔', name_en: 'Senegal', code: 'sn', continent: 'Africa' },
-        { name_zh: '塞尔维亚', name_en: 'Serbia', code: 'rs', continent: 'Europe' },
-        { name_zh: '新加坡', name_en: 'Singapore', code: 'sg', continent: 'Asia' },
-        { name_zh: '斯洛伐克', name_en: 'Slovakia', code: 'sk', continent: 'Europe' },
-        { name_zh: '斯洛文尼亚', name_en: 'Slovenia', code: 'si', continent: 'Europe' },
-        { name_zh: '索马里', name_en: 'Somalia', code: 'so', continent: 'Africa' },
-        { name_zh: '南非', name_en: 'South Africa', code: 'za', continent: 'Africa' },
-        { name_zh: '韩国', name_en: 'South Korea', code: 'kr', continent: 'Asia' },
-        { name_zh: '西班牙', name_en: 'Spain', code: 'es', continent: 'Europe' },
-        { name_zh: '斯里兰卡', name_en: 'Sri Lanka', code: 'lk', continent: 'Asia' },
-        { name_zh: '苏丹', name_en: 'Sudan', code: 'sd', continent: 'Africa' },
-        { name_zh: '瑞典', name_en: 'Sweden', code: 'se', continent: 'Europe' },
-        { name_zh: '瑞士', name_en: 'Switzerland', code: 'ch', continent: 'Europe' },
-        { name_zh: '叙利亚', name_en: 'Syria', code: 'sy', continent: 'Asia' },
-        { name_zh: '泰国', name_en: 'Thailand', code: 'th', continent: 'Asia' },
-        { name_zh: '突尼斯', name_en: 'Tunisia', code: 'tn', continent: 'Africa' },
-        { name_zh: '土耳其', name_en: 'Turkey', code: 'tr', continent: 'Asia' },
-        { name_zh: '乌干达', name_en: 'Uganda', code: 'ug', continent: 'Africa' },
-        { name_zh: '乌克兰', name_en: 'Ukraine', code: 'ua', continent: 'Europe' },
-        { name_zh: '阿联酋', name_en: 'United Arab Emirates', code: 'ae', continent: 'Asia' },
-        { name_zh: '英国', name_en: 'United Kingdom', code: 'gb', continent: 'Europe' },
-        { name_zh: '美国', name_en: 'United States', code: 'us', continent: 'North America' },
-        { name_zh: '乌拉圭', name_en: 'Uruguay', code: 'uy', continent: 'South America' },
-        { name_zh: '乌兹别克斯坦', name_en: 'Uzbekistan', code: 'uz', continent: 'Asia' },
-        { name_zh: '委内瑞拉', name_en: 'Venezuela', code: 've', continent: 'South America' },
-        { name_zh: '越南', name_en: 'Vietnam', code: 'vn', continent: 'Asia' },
-        { name_zh: '也门', name_en: 'Yemen', code: 'ye', continent: 'Asia' },
-        { name_zh: '赞比亚', name_en: 'Zambia', code: 'zm', continent: 'Africa' },
-        { name_zh: '津巴布韦', name_en: 'Zimbabwe', code: 'zw', continent: 'Africa' },
+        { name_en: "Afghanistan", name_zh: "阿富汗", name_ja: "アフガニスタン", name_fr: "Afghanistan", name_es: "Afganistán", name_pt: "Afeganistão", name_ru: "Афганистан", name_ko: "아프가니스탄", name_it: "Afghanistan", name_da: "Afghanistan", name_no: "Afghanistan", name_pl: "Afganistan", name_sk: "Afganistan", name_sr: "Авганистан", code: "af", continent: "Asia" },
+        { name_en: "Albania", name_zh: "阿尔巴尼亚", name_ja: "アルバニア", name_fr: "Albanie", name_es: "Albania", name_pt: "Albânia", name_ru: "Албания", name_ko: "알바니아", name_it: "Albania", name_da: "Albanien", name_no: "Albania", name_pl: "Albania", name_sk: "Albánsko", name_sr: "Албанија", code: "al", continent: "Europe" },
+        { name_en: "Algeria", name_zh: "阿尔及利亚", name_ja: "アルジェリア", name_fr: "Algérie", name_es: "Argelia", name_pt: "Argélia", name_ru: "Алжир", name_ko: "알제리", name_it: "Algeria", name_da: "Algeriet", name_no: "Algerie", name_pl: "Algieria", name_sk: "Alžírsko", name_sr: "Алжир", code: "dz", continent: "Africa" },
+        { name_en: "Andorra", name_zh: "安道尔", name_ja: "アンドラ", name_fr: "Andorre", name_es: "Andorra", name_pt: "Andorra", name_ru: "Андорра", name_ko: "안도라", name_it: "Andorra", name_da: "Andorra", name_no: "Andorra", name_pl: "Andora", name_sk: "Andorra", name_sr: "Андора", code: "ad", continent: "Europe" },
+        { name_en: "Angola", name_zh: "安哥拉", name_ja: "アンゴラ", name_fr: "Angola", name_es: "Angola", name_pt: "Angola", name_ru: "Ангола", name_ko: "앙골라", name_it: "Angola", name_da: "Angola", name_no: "Angola", name_pl: "Angola", name_sk: "Angola", name_sr: "Ангола", code: "ao", continent: "Africa" },
+        { name_en: "Argentina", name_zh: "阿根廷", name_ja: "アルゼンチン", name_fr: "Argentine", name_es: "Argentina", name_pt: "Argentina", name_ru: "Аргентина", name_ko: "아르헨티나", name_it: "Argentina", name_da: "Argentina", name_no: "Argentina", name_pl: "Argentyna", name_sk: "Argentína", name_sr: "Аргентина", code: "ar", continent: "South America" },
+        { name_en: "Armenia", name_zh: "亚美尼亚", name_ja: "アルメニア", name_fr: "Arménie", name_es: "Armenia", name_pt: "Arménia", name_ru: "Армения", name_ko: "아르메니아", name_it: "Armenia", name_da: "Armenien", name_no: "Armenia", name_pl: "Armenia", name_sk: "Arménsko", name_sr: "Јерменија", code: "am", continent: "Asia" },
+        { name_en: "Australia", name_zh: "澳大利亚", name_ja: "オーストラリア", name_fr: "Australie", name_es: "Australia", name_pt: "Austrália", name_ru: "Австралия", name_ko: "호주", name_it: "Australia", name_da: "Australien", name_no: "Australia", name_pl: "Australia", name_sk: "Austrália", name_sr: "Аустралија", code: "au", continent: "Oceania" },
+        { name_en: "Austria", name_zh: "奥地利", name_ja: "オーストリア", name_fr: "Autriche", name_es: "Austria", name_pt: "Áustria", name_ru: "Австрия", name_ko: "오스트리아", name_it: "Austria", name_da: "Østrig", name_no: "Østerrike", name_pl: "Austria", name_sk: "Rakúsko", name_sr: "Аустрија", code: "at", continent: "Europe" },
+        { name_en: "Azerbaijan", name_zh: "阿塞拜疆", name_ja: "アゼルバイジャン", name_fr: "Azerbaïdjan", name_es: "Azerbaiyán", name_pt: "Azerbaijão", name_ru: "Азербайджан", name_ko: "아제르바이잔", name_it: "Azerbaigian", name_da: "Aserbajdsjan", name_no: "Aserbajdsjan", name_pl: "Azerbejdżan", name_sk: "Azerbajdžan", name_sr: "Азербејџан", code: "az", continent: "Asia" },
+        { name_en: "Bahamas", name_zh: "巴哈马", name_ja: "バハマ", name_fr: "Bahamas", name_es: "Bahamas", name_pt: "Bahamas", name_ru: "Багамы", name_ko: "바하마", name_it: "Bahamas", name_da: "Bahamas", name_no: "Bahamas", name_pl: "Bahamy", name_sk: "Bahamy", name_sr: "Бахаме", code: "bs", continent: "North America" },
+        { name_en: "Bahrain", name_zh: "巴林", name_ja: "バーレーン", name_fr: "Bahreïn", name_es: "Baréin", name_pt: "Bahrein", name_ru: "Бахрейн", name_ko: "바레인", name_it: "Bahrein", name_da: "Bahrain", name_no: "Bahrain", name_pl: "Bahrajn", name_sk: "Bahrajn", name_sr: "Бахреин", code: "bh", continent: "Asia" },
+        { name_en: "Bangladesh", name_zh: "孟加拉国", name_ja: "バングラデシュ", name_fr: "Bangladesh", name_es: "Bangladés", name_pt: "Bangladesh", name_ru: "Бангладеш", name_ko: "방글라데시", name_it: "Bangladesh", name_da: "Bangladesh", name_no: "Bangladesh", name_pl: "Bangladesz", name_sk: "Bangladéš", name_sr: "Бангладеш", code: "bd", continent: "Asia" },
+        { name_en: "Barbados", name_zh: "巴巴多斯", name_ja: "バルバドス", name_fr: "Barbade", name_es: "Barbados", name_pt: "Barbados", name_ru: "Барбадос", name_ko: "바베이도스", name_it: "Barbados", name_da: "Barbados", name_no: "Barbados", name_pl: "Barbados", name_sk: "Barbados", name_sr: "Барбадос", code: "bb", continent: "North America" },
+        { name_en: "Belarus", name_zh: "白俄罗斯", name_ja: "ベラルーシ", name_fr: "Biélorussie", name_es: "Bielorrusia", name_pt: "Bielorrússia", name_ru: "Беларусь", name_ko: "벨라루스", name_it: "Bielorussia", name_da: "Hviderusland", name_no: "Hviterussland", name_pl: "Białoruś", name_sk: "Bielorusko", name_sr: "Белорусија", code: "by", continent: "Europe" },
+        { name_en: "Belgium", name_zh: "比利时", name_ja: "ベルギー", name_fr: "Belgique", name_es: "Bélgica", name_pt: "Bélgica", name_ru: "Бельгия", name_ko: "벨기에", name_it: "Belgio", name_da: "Belgien", name_no: "Belgia", name_pl: "Belgia", name_sk: "Belgicko", name_sr: "Белгија", code: "be", continent: "Europe" },
+        { name_en: "Belize", name_zh: "伯利兹", name_ja: "ベリーズ", name_fr: "Belize", name_es: "Belice", name_pt: "Belize", name_ru: "Белиз", name_ko: "벨리즈", name_it: "Belize", name_da: "Belize", name_no: "Belize", name_pl: "Belize", name_sk: "Belize", name_sr: "Белизе", code: "bz", continent: "North America" },
+        { name_en: "Benin", name_zh: "贝宁", name_ja: "ベナン", name_fr: "Bénin", name_es: "Benín", name_pt: "Benim", name_ru: "Бенин", name_ko: "베냉", name_it: "Benin", name_da: "Benin", name_no: "Benin", name_pl: "Benin", name_sk: "Benin", name_sr: "Бенин", code: "bj", continent: "Africa" },
+        { name_en: "Bhutan", name_zh: "不丹", name_ja: "ブータン", name_fr: "Bhoutan", name_es: "Bután", name_pt: "Butão", name_ru: "Бутан", name_ko: "부탄", name_it: "Bhutan", name_da: "Bhutan", name_no: "Bhutan", name_pl: "Bhutan", name_sk: "Bhután", name_sr: "Бутан", code: "bt", continent: "Asia" },
+        { name_en: "Bolivia", name_zh: "玻利维亚", name_ja: "ボリビア", name_fr: "Bolivie", name_es: "Bolivia", name_pt: "Bolívia", name_ru: "Боливия", name_ko: "볼리비아", name_it: "Bolivia", name_da: "Bolivia", name_no: "Bolivia", name_pl: "Boliwia", name_sk: "Bolívia", name_sr: "Боливија", code: "bo", continent: "South America" },
+        { name_en: "Bosnia and Herzegovina", name_zh: "波黑", name_ja: "ボスニア・ヘルツェゴビナ", name_fr: "Bosnie-Herzégovine", name_es: "Bosnia y Herzegovina", name_pt: "Bósnia e Herzegovina", name_ru: "Босния и Герцеговина", name_ko: "보스니아 헤르체고비나", name_it: "Bosnia ed Erzegovina", name_da: "Bosnien-Hercegovina", name_no: "Bosnia-Hercegovina", name_pl: "Bośnia i Hercegowina", name_sk: "Bosna a Hercegovina", name_sr: "Босна и Херцеговина", code: "ba", continent: "Europe" },
+        { name_en: "Botswana", name_zh: "博茨瓦纳", name_ja: "ボツワナ", name_fr: "Botswana", name_es: "Botsuana", name_pt: "Botsuana", name_ru: "Ботсвана", name_ko: "보츠와나", name_it: "Botswana", name_da: "Botswana", name_no: "Botswana", name_pl: "Botswana", name_sk: "Botswana", name_sr: "Боцвана", code: "bw", continent: "Africa" },
+        { name_en: "Brazil", name_zh: "巴西", name_ja: "ブラジル", name_fr: "Brésil", name_es: "Brasil", name_pt: "Brasil", name_ru: "Бразилия", name_ko: "브라질", name_it: "Brasile", name_da: "Brasilien", name_no: "Brasil", name_pl: "Brazylia", name_sk: "Brazília", name_sr: "Бразил", code: "br", continent: "South America" },
+        { name_en: "Brunei", name_zh: "文莱", name_ja: "ブルネイ", name_fr: "Brunei", name_es: "Brunéi", name_pt: "Brunei", name_ru: "Бруней", name_ko: "브루나이", name_it: "Brunei", name_da: "Brunei", name_no: "Brunei", name_pl: "Brunei", name_sk: "Brunej", name_sr: "Брунеј", code: "bn", continent: "Asia" },
+        { name_en: "Bulgaria", name_zh: "保加利亚", name_ja: "ブルガリア", name_fr: "Bulgarie", name_es: "Bulgaria", name_pt: "Bulgária", name_ru: "Болгария", name_ko: "불가리아", name_it: "Bulgaria", name_da: "Bulgarien", name_no: "Bulgaria", name_pl: "Bułgaria", name_sk: "Bulharsko", name_sr: "Бугарска", code: "bg", continent: "Europe" },
+        { name_en: "Burkina Faso", name_zh: "布基纳法索", name_ja: "ブルキナファソ", name_fr: "Burkina Faso", name_es: "Burkina Faso", name_pt: "Burkina Faso", name_ru: "Буркина-Фасо", name_ko: "부르키나파소", name_it: "Burkina Faso", name_da: "Burkina Faso", name_no: "Burkina Faso", name_pl: "Burkina Faso", name_sk: "Burkina Faso", name_sr: "Буркина Фасо", code: "bf", continent: "Africa" },
+        { name_en: "Cambodia", name_zh: "柬埔寨", name_ja: "カンボジア", name_fr: "Cambodge", name_es: "Camboya", name_pt: "Camboja", name_ru: "Камбоджа", name_ko: "캄보디아", name_it: "Cambogia", name_da: "Cambodja", name_no: "Kambodsja", name_pl: "Kambodża", name_sk: "Kambodža", name_sr: "Камбоџа", code: "kh", continent: "Asia" },
+        { name_en: "Cameroon", name_zh: "喀麦隆", name_ja: "カメルーン", name_fr: "Cameroun", name_es: "Camerún", name_pt: "Camarões", name_ru: "Камерун", name_ko: "카메룬", name_it: "Camerun", name_da: "Cameroun", name_no: "Kamerun", name_pl: "Kamerun", name_sk: "Kamerun", name_sr: "Камерун", code: "cm", continent: "Africa" },
+        { name_en: "Canada", name_zh: "加拿大", name_ja: "カナダ", name_fr: "Canada", name_es: "Canadá", name_pt: "Canadá", name_ru: "Канада", name_ko: "캐나다", name_it: "Canada", name_da: "Canada", name_no: "Canada", name_pl: "Kanada", name_sk: "Kanada", name_sr: "Канада", code: "ca", continent: "North America" },
+        { name_en: "Chad", name_zh: "乍得", name_ja: "チャド", name_fr: "Tchad", name_es: "Chad", name_pt: "Chade", name_ru: "Чад", name_ko: "차드", name_it: "Ciad", name_da: "Tchad", name_no: "Tsjad", name_pl: "Czad", name_sk: "Čad", name_sr: "Чад", code: "td", continent: "Africa" },
+        { name_en: "Chile", name_zh: "智利", name_ja: "チリ", name_fr: "Chili", name_es: "Chile", name_pt: "Chile", name_ru: "Чили", name_ko: "칠레", name_it: "Cile", name_da: "Chile", name_no: "Chile", name_pl: "Chile", name_sk: "Čile", name_sr: "Чиле", code: "cl", continent: "South America" },
+        { name_en: "China", name_zh: "中国", name_ja: "中国", name_fr: "Chine", name_es: "China", name_pt: "China", name_ru: "Китай", name_ko: "중국", name_it: "Cina", name_da: "Kina", name_no: "Kina", name_pl: "Chiny", name_sk: "Čína", name_sr: "Кина", code: "cn", continent: "Asia" },
+        { name_en: "Colombia", name_zh: "哥伦比亚", name_ja: "コロンビア", name_fr: "Colombie", name_es: "Colombia", name_pt: "Colômbia", name_ru: "Колумбия", name_ko: "콜롬비아", name_it: "Colombia", name_da: "Colombia", name_no: "Colombia", name_pl: "Kolumbia", name_sk: "Kolumbia", name_sr: "Колумбија", code: "co", continent: "South America" },
+        { name_en: "Costa Rica", name_zh: "哥斯达黎加", name_ja: "コスタリカ", name_fr: "Costa Rica", name_es: "Costa Rica", name_pt: "Costa Rica", name_ru: "Коста-Рика", name_ko: "코스타리카", name_it: "Costa Rica", name_da: "Costa Rica", name_no: "Costa Rica", name_pl: "Kostaryka", name_sk: "Kostarika", name_sr: "Костарика", code: "cr", continent: "North America" },
+        { name_en: "Croatia", name_zh: "克罗地亚", name_ja: "クロアチア", name_fr: "Croatie", name_es: "Croacia", name_pt: "Croácia", name_ru: "Хорватия", name_ko: "크로아티아", name_it: "Croazia", name_da: "Kroatien", name_no: "Kroatia", name_pl: "Chorwacja", name_sk: "Chorvátsko", name_sr: "Хрватска", code: "hr", continent: "Europe" },
+        { name_en: "Cuba", name_zh: "古巴", name_ja: "キューバ", name_fr: "Cuba", name_es: "Cuba", name_pt: "Cuba", name_ru: "Куба", name_ko: "쿠바", name_it: "Cuba", name_da: "Cuba", name_no: "Cuba", name_pl: "Kuba", name_sk: "Kuba", name_sr: "Куба", code: "cu", continent: "North America" },
+        { name_en: "Cyprus", name_zh: "塞浦路斯", name_ja: "キプロス", name_fr: "Chypre", name_es: "Chipre", name_pt: "Chipre", name_ru: "Кипр", name_ko: "키프로스", name_it: "Cipro", name_da: "Cypern", name_no: "Kypros", name_pl: "Cypr", name_sk: "Cyprus", name_sr: "Кипар", code: "cy", continent: "Europe" },
+        { name_en: "Czech Republic", name_zh: "捷克", name_ja: "チェコ", name_fr: "République tchèque", name_es: "República Checa", name_pt: "República Checa", name_ru: "Чехия", name_ko: "체코", name_it: "Repubblica Ceca", name_da: "Tjekkiet", name_no: "Tsjekkia", name_pl: "Czechy", name_sk: "Česko", name_sr: "Чешка", code: "cz", continent: "Europe" },
+        { name_en: "Denmark", name_zh: "丹麦", name_ja: "デンマーク", name_fr: "Danemark", name_es: "Dinamarca", name_pt: "Dinamarca", name_ru: "Дания", name_ko: "덴마크", name_it: "Danimarca", name_da: "Danmark", name_no: "Danmark", name_pl: "Dania", name_sk: "Dánsko", name_sr: "Данска", code: "dk", continent: "Europe" },
+        { name_en: "Djibouti", name_zh: "吉布提", name_ja: "ジブチ", name_fr: "Djibouti", name_es: "Yibuti", name_pt: "Djibuti", name_ru: "Джибути", name_ko: "지부티", name_it: "Gibuti", name_da: "Djibouti", name_no: "Djibouti", name_pl: "Dżibuti", name_sk: "Džibutsko", name_sr: "Џибути", code: "dj", continent: "Africa" },
+        { name_en: "Dominican Republic", name_zh: "多米尼加", name_ja: "ドミニカ共和国", name_fr: "République dominicaine", name_es: "República Dominicana", name_pt: "República Dominicana", name_ru: "Доминиканская Республика", name_ko: "도미니카 공화국", name_it: "Repubblica Dominicana", name_da: "Den Dominikanske Republik", name_no: "Den dominikanske republikk", name_pl: "Dominikana", name_sk: "Dominikánska republika", name_sr: "Доминиканска Република", code: "do", continent: "North America" },
+        { name_en: "Ecuador", name_zh: "厄瓜多尔", name_ja: "エクアドル", name_fr: "Équateur", name_es: "Ecuador", name_pt: "Equador", name_ru: "Эквадор", name_ko: "에콰도르", name_it: "Ecuador", name_da: "Ecuador", name_no: "Ecuador", name_pl: "Ekwador", name_sk: "Ekvádor", name_sr: "Еквадор", code: "ec", continent: "South America" },
+        { name_en: "Egypt", name_zh: "埃及", name_ja: "エジプト", name_fr: "Égypte", name_es: "Egipto", name_pt: "Egito", name_ru: "Египет", name_ko: "이집트", name_it: "Egitto", name_da: "Egypten", name_no: "Egypt", name_pl: "Egipt", name_sk: "Egypt", name_sr: "Египат", code: "eg", continent: "Africa" },
+        { name_en: "El Salvador", name_zh: "萨尔瓦多", name_ja: "エルサルバドル", name_fr: "Salvador", name_es: "El Salvador", name_pt: "El Salvador", name_ru: "Сальвадор", name_ko: "엘살바도르", name_it: "El Salvador", name_da: "El Salvador", name_no: "El Salvador", name_pl: "Salwador", name_sk: "Salvádor", name_sr: "Салвадор", code: "sv", continent: "North America" },
+        { name_en: "Estonia", name_zh: "爱沙尼亚", name_ja: "エストニア", name_fr: "Estonie", name_es: "Estonia", name_pt: "Estónia", name_ru: "Эстония", name_ko: "에스토니아", name_it: "Estonia", name_da: "Estland", name_no: "Estland", name_pl: "Estonia", name_sk: "Estónsko", name_sr: "Естонија", code: "ee", continent: "Europe" },
+        { name_en: "Ethiopia", name_zh: "埃塞俄比亚", name_ja: "エチオピア", name_fr: "Éthiopie", name_es: "Etiopía", name_pt: "Etiópia", name_ru: "Эфиопия", name_ko: "에티오피아", name_it: "Etiopia", name_da: "Etiopien", name_no: "Etiopia", name_pl: "Etiopia", name_sk: "Etiópia", name_sr: "Етиопија", code: "et", continent: "Africa" },
+        { name_en: "Fiji", name_zh: "斐济", name_ja: "フィジー", name_fr: "Fidji", name_es: "Fiyi", name_pt: "Fiji", name_ru: "Фиджи", name_ko: "피지", name_it: "Figi", name_da: "Fiji", name_no: "Fiji", name_pl: "Fidżi", name_sk: "Fidži", name_sr: "Фиџи", code: "fj", continent: "Oceania" },
+        { name_en: "Finland", name_zh: "芬兰", name_ja: "フィンランド", name_fr: "Finlande", name_es: "Finlandia", name_pt: "Finlândia", name_ru: "Финляндия", name_ko: "핀란드", name_it: "Finlandia", name_da: "Finland", name_no: "Finland", name_pl: "Finlandia", name_sk: "Fínsko", name_sr: "Финска", code: "fi", continent: "Europe" },
+        { name_en: "France", name_zh: "法国", name_ja: "フランス", name_fr: "France", name_es: "Francia", name_pt: "França", name_ru: "Франция", name_ko: "프랑스", name_it: "Francia", name_da: "Frankrig", name_no: "Frankrike", name_pl: "Francja", name_sk: "Francúzsko", name_sr: "Француска", code: "fr", continent: "Europe" },
+        { name_en: "Gabon", name_zh: "加蓬", name_ja: "ガボン", name_fr: "Gabon", name_es: "Gabón", name_pt: "Gabão", name_ru: "Габон", name_ko: "가봉", name_it: "Gabon", name_da: "Gabon", name_no: "Gabon", name_pl: "Gabon", name_sk: "Gabon", name_sr: "Габон", code: "ga", continent: "Africa" },
+        { name_en: "Georgia", name_zh: "格鲁吉亚", name_ja: "ジョージア", name_fr: "Géorgie", name_es: "Georgia", name_pt: "Geórgia", name_ru: "Грузия", name_ko: "조지아", name_it: "Georgia", name_da: "Georgien", name_no: "Georgia", name_pl: "Gruzja", name_sk: "Gruzínsko", name_sr: "Грузија", code: "ge", continent: "Asia" },
+        { name_en: "Germany", name_zh: "德国", name_ja: "ドイツ", name_fr: "Allemagne", name_es: "Alemania", name_pt: "Alemanha", name_ru: "Германия", name_ko: "독일", name_it: "Germania", name_da: "Tyskland", name_no: "Tyskland", name_pl: "Niemcy", name_sk: "Nemecko", name_sr: "Немачка", code: "de", continent: "Europe" },
+        { name_en: "Ghana", name_zh: "加纳", name_ja: "ガーナ", name_fr: "Ghana", name_es: "Ghana", name_pt: "Gana", name_ru: "Гана", name_ko: "가나", name_it: "Ghana", name_da: "Ghana", name_no: "Ghana", name_pl: "Ghana", name_sk: "Ghana", name_sr: "Гана", code: "gh", continent: "Africa" },
+        { name_en: "Greece", name_zh: "希腊", name_ja: "ギリシャ", name_fr: "Grèce", name_es: "Grecia", name_pt: "Grécia", name_ru: "Греция", name_ko: "그리스", name_it: "Grecia", name_da: "Grækenland", name_no: "Hellas", name_pl: "Grecja", name_sk: "Grécko", name_sr: "Грчка", code: "gr", continent: "Europe" },
+        { name_en: "Guatemala", name_zh: "危地马拉", name_ja: "グアテマラ", name_fr: "Guatemala", name_es: "Guatemala", name_pt: "Guatemala", name_ru: "Гватемала", name_ko: "과테말라", name_it: "Guatemala", name_da: "Guatemala", name_no: "Guatemala", name_pl: "Gwatemala", name_sk: "Guatemala", name_sr: "Гватемала", code: "gt", continent: "North America" },
+        { name_en: "Haiti", name_zh: "海地", name_ja: "ハイチ", name_fr: "Haïti", name_es: "Haití", name_pt: "Haiti", name_ru: "Гаити", name_ko: "아이티", name_it: "Haiti", name_da: "Haiti", name_no: "Haiti", name_pl: "Haiti", name_sk: "Haiti", name_sr: "Хаити", code: "ht", continent: "North America" },
+        { name_en: "Honduras", name_zh: "洪都拉斯", name_ja: "ホンジュラス", name_fr: "Honduras", name_es: "Honduras", name_pt: "Honduras", name_ru: "Гондурас", name_ko: "온두라스", name_it: "Honduras", name_da: "Honduras", name_no: "Honduras", name_pl: "Honduras", name_sk: "Honduras", name_sr: "Хондурас", code: "hn", continent: "North America" },
+        { name_en: "Hungary", name_zh: "匈牙利", name_ja: "ハンガリー", name_fr: "Hongrie", name_es: "Hungría", name_pt: "Hungria", name_ru: "Венгрия", name_ko: "헝가리", name_it: "Ungheria", name_da: "Ungarn", name_no: "Ungarn", name_pl: "Węgry", name_sk: "Maďarsko", name_sr: "Мађарска", code: "hu", continent: "Europe" },
+        { name_en: "Iceland", name_zh: "冰岛", name_ja: "アイスランド", name_fr: "Islande", name_es: "Islandia", name_pt: "Islândia", name_ru: "Исландия", name_ko: "아이슬란드", name_it: "Islanda", name_da: "Island", name_no: "Island", name_pl: "Islandia", name_sk: "Island", name_sr: "Исланд", code: "is", continent: "Europe" },
+        { name_en: "India", name_zh: "印度", name_ja: "インド", name_fr: "Inde", name_es: "India", name_pt: "Índia", name_ru: "Индия", name_ko: "인도", name_it: "India", name_da: "Indien", name_no: "India", name_pl: "Indie", name_sk: "India", name_sr: "Индија", code: "in", continent: "Asia" },
+        { name_en: "Indonesia", name_zh: "印度尼西亚", name_ja: "インドネシア", name_fr: "Indonésie", name_es: "Indonesia", name_pt: "Indonésia", name_ru: "Индонезия", name_ko: "인도네시아", name_it: "Indonesia", name_da: "Indonesien", name_no: "Indonesia", name_pl: "Indonezja", name_sk: "Indonézia", name_sr: "Индонезија", code: "id", continent: "Asia" },
+        { name_en: "Iran", name_zh: "伊朗", name_ja: "イラン", name_fr: "Iran", name_es: "Irán", name_pt: "Irã", name_ru: "Иран", name_ko: "이란", name_it: "Iran", name_da: "Iran", name_no: "Iran", name_pl: "Iran", name_sk: "Irán", name_sr: "Иран", code: "ir", continent: "Asia" },
+        { name_en: "Iraq", name_zh: "伊拉克", name_ja: "イラク", name_fr: "Irak", name_es: "Irak", name_pt: "Iraque", name_ru: "Ирак", name_ko: "이라크", name_it: "Iraq", name_da: "Irak", name_no: "Irak", name_pl: "Irak", name_sk: "Irak", name_sr: "Ирак", code: "iq", continent: "Asia" },
+        { name_en: "Ireland", name_zh: "爱尔兰", name_ja: "アイルランド", name_fr: "Irlande", name_es: "Irlanda", name_pt: "Irlanda", name_ru: "Ирландия", name_ko: "아일랜드", name_it: "Irlanda", name_da: "Irland", name_no: "Irland", name_pl: "Irlandia", name_sk: "Írsko", name_sr: "Ирска", code: "ie", continent: "Europe" },
+        { name_en: "Israel", name_zh: "以色列", name_ja: "イスラエル", name_fr: "Israël", name_es: "Israel", name_pt: "Israel", name_ru: "Израиль", name_ko: "이스라엘", name_it: "Israele", name_da: "Israel", name_no: "Israel", name_pl: "Izrael", name_sk: "Izrael", name_sr: "Израел", code: "il", continent: "Asia" },
+        { name_en: "Italy", name_zh: "意大利", name_ja: "イタリア", name_fr: "Italie", name_es: "Italia", name_pt: "Itália", name_ru: "Италия", name_ko: "이탈리아", name_it: "Italia", name_da: "Italien", name_no: "Italia", name_pl: "Włochy", name_sk: "Taliansko", name_sr: "Италија", code: "it", continent: "Europe" },
+        { name_en: "Jamaica", name_zh: "牙买加", name_ja: "ジャマイカ", name_fr: "Jamaïque", name_es: "Jamaica", name_pt: "Jamaica", name_ru: "Ямайка", name_ko: "자메이카", name_it: "Giamaica", name_da: "Jamaica", name_no: "Jamaica", name_pl: "Jamajka", name_sk: "Jamajka", name_sr: "Јамајка", code: "jm", continent: "North America" },
+        { name_en: "Japan", name_zh: "日本", name_ja: "日本", name_fr: "Japon", name_es: "Japón", name_pt: "Japão", name_ru: "Япония", name_ko: "일본", name_it: "Giappone", name_da: "Japan", name_no: "Japan", name_pl: "Japonia", name_sk: "Japonsko", name_sr: "Јапан", code: "jp", continent: "Asia" },
+        { name_en: "Jordan", name_zh: "约旦", name_ja: "ヨルダン", name_fr: "Jordanie", name_es: "Jordania", name_pt: "Jordânia", name_ru: "Иордания", name_ko: "요르단", name_it: "Giordania", name_da: "Jordan", name_no: "Jordan", name_pl: "Jordania", name_sk: "Jordánsko", name_sr: "Јордан", code: "jo", continent: "Asia" },
+        { name_en: "Kazakhstan", name_zh: "哈萨克斯坦", name_ja: "カザフスタン", name_fr: "Kazakhstan", name_es: "Kazajistán", name_pt: "Cazaquistão", name_ru: "Казахстан", name_ko: "카자흐스탄", name_it: "Kazakistan", name_da: "Kasakhstan", name_no: "Kasakhstan", name_pl: "Kazachstan", name_sk: "Kazachstan", name_sr: "Казахстан", code: "kz", continent: "Asia" },
+        { name_en: "Kenya", name_zh: "肯尼亚", name_ja: "ケニア", name_fr: "Kenya", name_es: "Kenia", name_pt: "Quênia", name_ru: "Кения", name_ko: "케냐", name_it: "Kenya", name_da: "Kenya", name_no: "Kenya", name_pl: "Kenia", name_sk: "Keňa", name_sr: "Кенија", code: "ke", continent: "Africa" },
+        { name_en: "Kuwait", name_zh: "科威特", name_ja: "クウェート", name_fr: "Koweït", name_es: "Kuwait", name_pt: "Kuwait", name_ru: "Кувейт", name_ko: "쿠웨이트", name_it: "Kuwait", name_da: "Kuwait", name_no: "Kuwait", name_pl: "Kuwejt", name_sk: "Kuvajt", name_sr: "Кувајт", code: "kw", continent: "Asia" },
+        { name_en: "Latvia", name_zh: "拉脱维亚", name_ja: "ラトビア", name_fr: "Lettonie", name_es: "Letonia", name_pt: "Letónia", name_ru: "Латвия", name_ko: "라트비아", name_it: "Lettonia", name_da: "Letland", name_no: "Latvia", name_pl: "Łotwa", name_sk: "Lotyšsko", name_sr: "Летонија", code: "lv", continent: "Europe" },
+        { name_en: "Lebanon", name_zh: "黎巴嫩", name_ja: "レバノン", name_fr: "Liban", name_es: "Líbano", name_pt: "Líbano", name_ru: "Ливан", name_ko: "레바논", name_it: "Libano", name_da: "Libanon", name_no: "Libanon", name_pl: "Liban", name_sk: "Libanon", name_sr: "Либан", code: "lb", continent: "Asia" },
+        { name_en: "Liberia", name_zh: "利比里亚", name_ja: "リベリア", name_fr: "Libéria", name_es: "Liberia", name_pt: "Libéria", name_ru: "Либерия", name_ko: "라이베리아", name_it: "Liberia", name_da: "Liberia", name_no: "Liberia", name_pl: "Liberia", name_sk: "Libéria", name_sr: "Либерија", code: "lr", continent: "Africa" },
+        { name_en: "Libya", name_zh: "利比亚", name_ja: "リビア", name_fr: "Libye", name_es: "Libia", name_pt: "Líbia", name_ru: "Ливия", name_ko: "리비아", name_it: "Libia", name_da: "Libyen", name_no: "Libya", name_pl: "Libia", name_sk: "Líbya", name_sr: "Либија", code: "ly", continent: "Africa" },
+        { name_en: "Lithuania", name_zh: "立陶宛", name_ja: "リトアニア", name_fr: "Lituanie", name_es: "Lituania", name_pt: "Lituânia", name_ru: "Литва", name_ko: "리투아니아", name_it: "Lituania", name_da: "Litauen", name_no: "Litauen", name_pl: "Litwa", name_sk: "Litva", name_sr: "Литванија", code: "lt", continent: "Europe" },
+        { name_en: "Luxembourg", name_zh: "卢森堡", name_ja: "ルクセンブルク", name_fr: "Luxembourg", name_es: "Luxemburgo", name_pt: "Luxemburgo", name_ru: "Люксембург", name_ko: "룩셈부르크", name_it: "Lussemburgo", name_da: "Luxembourg", name_no: "Luxembourg", name_pl: "Luksemburg", name_sk: "Luxembursko", name_sr: "Луксембург", code: "lu", continent: "Europe" },
+        { name_en: "Madagascar", name_zh: "马达加斯加", name_ja: "マダガスカル", name_fr: "Madagascar", name_es: "Madagascar", name_pt: "Madagáscar", name_ru: "Мадагаскар", name_ko: "마다가스카르", name_it: "Madagascar", name_da: "Madagaskar", name_no: "Madagaskar", name_pl: "Madagaskar", name_sk: "Madagaskar", name_sr: "Мадагаскар", code: "mg", continent: "Africa" },
+        { name_en: "Malaysia", name_zh: "马来西亚", name_ja: "マレーシア", name_fr: "Malaisie", name_es: "Malasia", name_pt: "Malásia", name_ru: "Малайзия", name_ko: "말레이시아", name_it: "Malesia", name_da: "Malaysia", name_no: "Malaysia", name_pl: "Malezja", name_sk: "Malajzia", name_sr: "Малезија", code: "my", continent: "Asia" },
+        { name_en: "Mali", name_zh: "马里", name_ja: "マリ", name_fr: "Mali", name_es: "Malí", name_pt: "Mali", name_ru: "Мали", name_ko: "말리", name_it: "Mali", name_da: "Mali", name_no: "Mali", name_pl: "Mali", name_sk: "Mali", name_sr: "Мали", code: "ml", continent: "Africa" },
+        { name_en: "Malta", name_zh: "马耳他", name_ja: "マルタ", name_fr: "Malte", name_es: "Malta", name_pt: "Malta", name_ru: "Мальта", name_ko: "몰타", name_it: "Malta", name_da: "Malta", name_no: "Malta", name_pl: "Malta", name_sk: "Malta", name_sr: "Малта", code: "mt", continent: "Europe" },
+        { name_en: "Mexico", name_zh: "墨西哥", name_ja: "メキシコ", name_fr: "Mexique", name_es: "México", name_pt: "México", name_ru: "Мексика", name_ko: "멕시코", name_it: "Messico", name_da: "Mexico", name_no: "Mexico", name_pl: "Meksyk", name_sk: "Mexiko", name_sr: "Мексико", code: "mx", continent: "North America" },
+        { name_en: "Monaco", name_zh: "摩纳哥", name_ja: "モナコ", name_fr: "Monaco", name_es: "Mónaco", name_pt: "Mónaco", name_ru: "Монако", name_ko: "모나코", name_it: "Monaco", name_da: "Monaco", name_no: "Monaco", name_pl: "Monako", name_sk: "Monako", name_sr: "Монако", code: "mc", continent: "Europe" },
+        { name_en: "Mongolia", name_zh: "蒙古", name_ja: "モンゴル", name_fr: "Mongolie", name_es: "Mongolia", name_pt: "Mongólia", name_ru: "Монголия", name_ko: "몽골", name_it: "Mongolia", name_da: "Mongoliet", name_no: "Mongolia", name_pl: "Mongolia", name_sk: "Mongolsko", name_sr: "Монголија", code: "mn", continent: "Asia" },
+        { name_en: "Morocco", name_zh: "摩洛哥", name_ja: "モロッコ", name_fr: "Maroc", name_es: "Marruecos", name_pt: "Marrocos", name_ru: "Марокко", name_ko: "모로코", name_it: "Marocco", name_da: "Marokko", name_no: "Marokko", name_pl: "Maroko", name_sk: "Maroko", name_sr: "Мароко", code: "ma", continent: "Africa" },
+        { name_en: "Myanmar", name_zh: "缅甸", name_ja: "ミャンマー", name_fr: "Birmanie", name_es: "Myanmar", name_pt: "Mianmar", name_ru: "Мьянма", name_ko: "미얀마", name_it: "Myanmar", name_da: "Myanmar", name_no: "Myanmar", name_pl: "Mjanma", name_sk: "Mjanmarsko", name_sr: "Мјанмар", code: "mm", continent: "Asia" },
+        { name_en: "Nepal", name_zh: "尼泊尔", name_ja: "ネパール", name_fr: "Népal", name_es: "Nepal", name_pt: "Nepal", name_ru: "Непал", name_ko: "네팔", name_it: "Nepal", name_da: "Nepal", name_no: "Nepal", name_pl: "Nepal", name_sk: "Nepál", name_sr: "Непал", code: "np", continent: "Asia" },
+        { name_en: "Netherlands", name_zh: "荷兰", name_ja: "オランダ", name_fr: "Pays-Bas", name_es: "Países Bajos", name_pt: "Países Baixos", name_ru: "Нидерланды", name_ko: "네덜란드", name_it: "Paesi Bassi", name_da: "Holland", name_no: "Nederland", name_pl: "Holandia", name_sk: "Holandsko", name_sr: "Холандија", code: "nl", continent: "Europe" },
+        { name_en: "New Zealand", name_zh: "新西兰", name_ja: "ニュージーランド", name_fr: "Nouvelle-Zélande", name_es: "Nueva Zelanda", name_pt: "Nova Zelândia", name_ru: "Новая Зеландия", name_ko: "뉴질랜드", name_it: "Nuova Zelanda", name_da: "New Zealand", name_no: "New Zealand", name_pl: "Nowa Zelandia", name_sk: "Nový Zéland", name_sr: "Нови Зеланд", code: "nz", continent: "Oceania" },
+        { name_en: "Nicaragua", name_zh: "尼加拉瓜", name_ja: "ニカラグア", name_fr: "Nicaragua", name_es: "Nicaragua", name_pt: "Nicarágua", name_ru: "Никарагуа", name_ko: "니카라과", name_it: "Nicaragua", name_da: "Nicaragua", name_no: "Nicaragua", name_pl: "Nikaragua", name_sk: "Nikaragua", name_sr: "Никарагва", code: "ni", continent: "North America" },
+        { name_en: "Niger", name_zh: "尼日尔", name_ja: "ニジェール", name_fr: "Niger", name_es: "Níger", name_pt: "Níger", name_ru: "Нигер", name_ko: "니제르", name_it: "Niger", name_da: "Niger", name_no: "Niger", name_pl: "Niger", name_sk: "Niger", name_sr: "Нигер", code: "ne", continent: "Africa" },
+        { name_en: "Nigeria", name_zh: "尼日利亚", name_ja: "ナイジェリア", name_fr: "Nigeria", name_es: "Nigeria", name_pt: "Nigéria", name_ru: "Нигерия", name_ko: "나이지리아", name_it: "Nigeria", name_da: "Nigeria", name_no: "Nigeria", name_pl: "Nigeria", name_sk: "Nigéria", name_sr: "Нигерија", code: "ng", continent: "Africa" },
+        { name_en: "North Korea", name_zh: "朝鲜", name_ja: "朝鮮民主主義人民共和国", name_fr: "Corée du Nord", name_es: "Corea del Norte", name_pt: "Coreia do Norte", name_ru: "Северная Корея", name_ko: "북한", name_it: "Corea del Nord", name_da: "Nordkorea", name_no: "Nord-Korea", name_pl: "Korea Północna", name_sk: "Severná Kórea", name_sr: "Северна Кореја", code: "kp", continent: "Asia" },
+        { name_en: "Norway", name_zh: "挪威", name_ja: "ノルウェー", name_fr: "Norvège", name_es: "Noruega", name_pt: "Noruega", name_ru: "Норвегия", name_ko: "노르웨이", name_it: "Norvegia", name_da: "Norge", name_no: "Norge", name_pl: "Norwegia", name_sk: "Nórsko", name_sr: "Норвешка", code: "no", continent: "Europe" },
+        { name_en: "Oman", name_zh: "阿曼", name_ja: "オマーン", name_fr: "Oman", name_es: "Omán", name_pt: "Omã", name_ru: "Оман", name_ko: "오만", name_it: "Oman", name_da: "Oman", name_no: "Oman", name_pl: "Oman", name_sk: "Omán", name_sr: "Оман", code: "om", continent: "Asia" },
+        { name_en: "Pakistan", name_zh: "巴基斯坦", name_ja: "パキスタン", name_fr: "Pakistan", name_es: "Pakistán", name_pt: "Paquistão", name_ru: "Пакистан", name_ko: "파키스탄", name_it: "Pakistan", name_da: "Pakistan", name_no: "Pakistan", name_pl: "Pakistan", name_sk: "Pakistan", name_sr: "Пакистан", code: "pk", continent: "Asia" },
+        { name_en: "Panama", name_zh: "巴拿马", name_ja: "パナマ", name_fr: "Panama", name_es: "Panamá", name_pt: "Panamá", name_ru: "Панама", name_ko: "파나마", name_it: "Panama", name_da: "Panama", name_no: "Panama", name_pl: "Panama", name_sk: "Panama", name_sr: "Панама", code: "pa", continent: "North America" },
+        { name_en: "Papua New Guinea", name_zh: "巴布亚新几内亚", name_ja: "パプアニューギニア", name_fr: "Papouasie-Nouvelle-Guinée", name_es: "Papúa Nueva Guinea", name_pt: "Papua-Nova Guiné", name_ru: "Папуа — Новая Гвинея", name_ko: "파푸아뉴기니", name_it: "Papua Nuova Guinea", name_da: "Papua Ny Guinea", name_no: "Papua Ny-Guinea", name_pl: "Papua-Nowa Gwinea", name_sk: "Papua-Nová Guinea", name_sr: "Папуа Нова Гвинеја", code: "pg", continent: "Oceania" },
+        { name_en: "Paraguay", name_zh: "巴拉圭", name_ja: "パラグアイ", name_fr: "Paraguay", name_es: "Paraguay", name_pt: "Paraguai", name_ru: "Парагвай", name_ko: "파라과이", name_it: "Paraguay", name_da: "Paraguay", name_no: "Paraguay", name_pl: "Paragwaj", name_sk: "Paraguaj", name_sr: "Парагвај", code: "py", continent: "South America" },
+        { name_en: "Peru", name_zh: "秘鲁", name_ja: "ペルー", name_fr: "Pérou", name_es: "Perú", name_pt: "Peru", name_ru: "Перу", name_ko: "페루", name_it: "Perù", name_da: "Peru", name_no: "Peru", name_pl: "Peru", name_sk: "Peru", name_sr: "Перу", code: "pe", continent: "South America" },
+        { name_en: "Philippines", name_zh: "菲律宾", name_ja: "フィリピン", name_fr: "Philippines", name_es: "Filipinas", name_pt: "Filipinas", name_ru: "Филиппины", name_ko: "필리핀", name_it: "Filippine", name_da: "Filippinerne", name_no: "Filippinene", name_pl: "Filipiny", name_sk: "Filipíny", name_sr: "Филипини", code: "ph", continent: "Asia" },
+        { name_en: "Poland", name_zh: "波兰", name_ja: "ポーランド", name_fr: "Pologne", name_es: "Polonia", name_pt: "Polónia", name_ru: "Польша", name_ko: "폴란드", name_it: "Polonia", name_da: "Polen", name_no: "Polen", name_pl: "Polska", name_sk: "Poľsko", name_sr: "Пољска", code: "pl", continent: "Europe" },
+        { name_en: "Portugal", name_zh: "葡萄牙", name_ja: "ポルトガル", name_fr: "Portugal", name_es: "Portugal", name_pt: "Portugal", name_ru: "Португалия", name_ko: "포르투갈", name_it: "Portogallo", name_da: "Portugal", name_no: "Portugal", name_pl: "Portugalia", name_sk: "Portugalsko", name_sr: "Португалија", code: "pt", continent: "Europe" },
+        { name_en: "Qatar", name_zh: "卡塔尔", name_ja: "カタール", name_fr: "Qatar", name_es: "Catar", name_pt: "Catar", name_ru: "Катар", name_ko: "카타르", name_it: "Qatar", name_da: "Qatar", name_no: "Qatar", name_pl: "Katar", name_sk: "Katar", name_sr: "Катар", code: "qa", continent: "Asia" },
+        { name_en: "Romania", name_zh: "罗马尼亚", name_ja: "ルーマニア", name_fr: "Roumanie", name_es: "Rumania", name_pt: "Roménia", name_ru: "Румыния", name_ko: "루마니아", name_it: "Romania", name_da: "Rumænien", name_no: "Romania", name_pl: "Rumunia", name_sk: "Rumunsko", name_sr: "Румунија", code: "ro", continent: "Europe" },
+        { name_en: "Russia", name_zh: "俄罗斯", name_ja: "ロシア", name_fr: "Russie", name_es: "Rusia", name_pt: "Rússia", name_ru: "Россия", name_ko: "러시아", name_it: "Russia", name_da: "Rusland", name_no: "Russland", name_pl: "Rosja", name_sk: "Rusko", name_sr: "Русија", code: "ru", continent: "Europe" },
+        { name_en: "Saudi Arabia", name_zh: "沙特阿拉伯", name_ja: "サウジアラビア", name_fr: "Arabie saoudite", name_es: "Arabia Saudita", name_pt: "Arábia Saudita", name_ru: "Саудовская Аравия", name_ko: "사우디아라비아", name_it: "Arabia Saudita", name_da: "Saudi-Arabien", name_no: "Saudi-Arabia", name_pl: "Arabia Saudyjska", name_sk: "Saudská Arábia", name_sr: "Саудијска Арабија", code: "sa", continent: "Asia" },
+        { name_en: "Senegal", name_zh: "塞内加尔", name_ja: "セネガル", name_fr: "Sénégal", name_es: "Senegal", name_pt: "Senegal", name_ru: "Сенегал", name_ko: "세네갈", name_it: "Senegal", name_da: "Senegal", name_no: "Senegal", name_pl: "Senegal", name_sk: "Senegal", name_sr: "Сенегал", code: "sn", continent: "Africa" },
+        { name_en: "Serbia", name_zh: "塞尔维亚", name_ja: "セルビア", name_fr: "Serbie", name_es: "Serbia", name_pt: "Sérvia", name_ru: "Сербия", name_ko: "세르비아", name_it: "Serbia", name_da: "Serbien", name_no: "Serbia", name_pl: "Serbia", name_sk: "Srbsko", name_sr: "Србија", code: "rs", continent: "Europe" },
+        { name_en: "Singapore", name_zh: "新加坡", name_ja: "シンガポール", name_fr: "Singapour", name_es: "Singapur", name_pt: "Singapura", name_ru: "Сингапур", name_ko: "싱가포르", name_it: "Singapore", name_da: "Singapore", name_no: "Singapore", name_pl: "Singapur", name_sk: "Singapur", name_sr: "Сингапур", code: "sg", continent: "Asia" },
+        { name_en: "Slovakia", name_zh: "斯洛伐克", name_ja: "スロバキア", name_fr: "Slovaquie", name_es: "Eslovaquia", name_pt: "Eslováquia", name_ru: "Словакия", name_ko: "슬로바키아", name_it: "Slovacchia", name_da: "Slovakiet", name_no: "Slovakia", name_pl: "Słowacja", name_sk: "Slovensko", name_sr: "Словачка", code: "sk", continent: "Europe" },
+        { name_en: "Slovenia", name_zh: "斯洛文尼亚", name_ja: "スロベニア", name_fr: "Slovénie", name_es: "Eslovenia", name_pt: "Eslovénia", name_ru: "Словения", name_ko: "슬로베니아", name_it: "Slovenia", name_da: "Slovenien", name_no: "Slovenia", name_pl: "Słowenia", name_sk: "Slovinsko", name_sr: "Словенија", code: "si", continent: "Europe" },
+        { name_en: "Somalia", name_zh: "索马里", name_ja: "ソマリア", name_fr: "Somalie", name_es: "Somalia", name_pt: "Somália", name_ru: "Сомали", name_ko: "소말리아", name_it: "Somalia", name_da: "Somalia", name_no: "Somalia", name_pl: "Somalia", name_sk: "Somálsko", name_sr: "Сомалија", code: "so", continent: "Africa" },
+        { name_en: "South Africa", name_zh: "南非", name_ja: "南アフリカ", name_fr: "Afrique du Sud", name_es: "Sudáfrica", name_pt: "África do Sul", name_ru: "Южная Африка", name_ko: "남아프리카 공화국", name_it: "Sudafrica", name_da: "Sydafrika", name_no: "Sør-Afrika", name_pl: "Republika Południowej Afryki", name_sk: "Južná Afrika", name_sr: "Јужна Африка", code: "za", continent: "Africa" },
+        { name_en: "South Korea", name_zh: "韩国", name_ja: "大韓民国", name_fr: "Corée du Sud", name_es: "Corea del Sur", name_pt: "Coreia do Sul", name_ru: "Южная Корея", name_ko: "대한민국", name_it: "Corea del Sud", name_da: "Sydkorea", name_no: "Sør-Korea", name_pl: "Korea Południowa", name_sk: "Južná Kórea", name_sr: "Јужна Кореја", code: "kr", continent: "Asia" },
+        { name_en: "Spain", name_zh: "西班牙", name_ja: "スペイン", name_fr: "Espagne", name_es: "España", name_pt: "Espanha", name_ru: "Испания", name_ko: "스페인", name_it: "Spagna", name_da: "Spanien", name_no: "Spania", name_pl: "Hiszpania", name_sk: "Španielsko", name_sr: "Шпанија", code: "es", continent: "Europe" },
+        { name_en: "Sri Lanka", name_zh: "斯里兰卡", name_ja: "スリランカ", name_fr: "Sri Lanka", name_es: "Sri Lanka", name_pt: "Sri Lanka", name_ru: "Шри-Ланка", name_ko: "스리랑카", name_it: "Sri Lanka", name_da: "Sri Lanka", name_no: "Sri Lanka", name_pl: "Sri Lanka", name_sk: "Srí Lanka", name_sr: "Шри Ланка", code: "lk", continent: "Asia" },
+        { name_en: "Sudan", name_zh: "苏丹", name_ja: "スーダン", name_fr: "Soudan", name_es: "Sudán", name_pt: "Sudão", name_ru: "Судан", name_ko: "수단", name_it: "Sudan", name_da: "Sudan", name_no: "Sudan", name_pl: "Sudan", name_sk: "Sudán", name_sr: "Судан", code: "sd", continent: "Africa" },
+        { name_en: "Sweden", name_zh: "瑞典", name_ja: "スウェーデン", name_fr: "Suède", name_es: "Suecia", name_pt: "Suécia", name_ru: "Швеция", name_ko: "스웨덴", name_it: "Svezia", name_da: "Sverige", name_no: "Sverige", name_pl: "Szwecja", name_sk: "Švédsko", name_sr: "Шведска", code: "se", continent: "Europe" },
+        { name_en: "Switzerland", name_zh: "瑞士", name_ja: "スイス", name_fr: "Suisse", name_es: "Suiza", name_pt: "Suíça", name_ru: "Швейцария", name_ko: "스위스", name_it: "Svizzera", name_da: "Schweiz", name_no: "Sveits", name_pl: "Szwajcaria", name_sk: "Švajčiarsko", name_sr: "Швајцарска", code: "ch", continent: "Europe" },
+        { name_en: "Syria", name_zh: "叙利亚", name_ja: "シリア", name_fr: "Syrie", name_es: "Siria", name_pt: "Síria", name_ru: "Сирия", name_ko: "시리아", name_it: "Siria", name_da: "Syrien", name_no: "Syria", name_pl: "Syria", name_sk: "Sýria", name_sr: "Сирија", code: "sy", continent: "Asia" },
+        { name_en: "Taiwan", name_zh: "中国台湾", name_ja: "台湾", name_fr: "Taïwan", name_es: "Taiwán", name_pt: "Taiwan", name_ru: "Тайвань", name_ko: "대만", name_it: "Taiwan", name_da: "Taiwan", name_no: "Taiwan", name_pl: "Tajwan", name_sk: "Taiwan", name_sr: "Тајван", code: "tw", continent: "Asia" },
+        { name_en: "Tanzania", name_zh: "坦桑尼亚", name_ja: "タンザニア", name_fr: "Tanzanie", name_es: "Tanzania", name_pt: "Tanzânia", name_ru: "Танзания", name_ko: "탄자니아", name_it: "Tanzania", name_da: "Tanzania", name_no: "Tanzania", name_pl: "Tanzania", name_sk: "Tanzánia", name_sr: "Танзанија", code: "tz", continent: "Africa" },
+        { name_en: "Thailand", name_zh: "泰国", name_ja: "タイ", name_fr: "Thaïlande", name_es: "Tailandia", name_pt: "Tailândia", name_ru: "Таиланд", name_ko: "태국", name_it: "Tailandia", name_da: "Thailand", name_no: "Thailand", name_pl: "Tajlandia", name_sk: "Thajsko", name_sr: "Тајланд", code: "th", continent: "Asia" },
+        { name_en: "Tunisia", name_zh: "突尼斯", name_ja: "チュニジア", name_fr: "Tunisie", name_es: "Túnez", name_pt: "Tunísia", name_ru: "Тунис", name_ko: "튀니지", name_it: "Tunisia", name_da: "Tunesien", name_no: "Tunisia", name_pl: "Tunezja", name_sk: "Tunisko", name_sr: "Тунис", code: "tn", continent: "Africa" },
+        { name_en: "Turkey", name_zh: "土耳其", name_ja: "トルコ", name_fr: "Turquie", name_es: "Turquía", name_pt: "Turquia", name_ru: "Турция", name_ko: "터키", name_it: "Turchia", name_da: "Tyrkiet", name_no: "Tyrkia", name_pl: "Turcja", name_sk: "Turecko", name_sr: "Турска", code: "tr", continent: "Asia" },
+        { name_en: "Uganda", name_zh: "乌干达", name_ja: "ウガンダ", name_fr: "Ouganda", name_es: "Uganda", name_pt: "Uganda", name_ru: "Уганда", name_ko: "우간다", name_it: "Uganda", name_da: "Uganda", name_no: "Uganda", name_pl: "Uganda", name_sk: "Uganda", name_sr: "Уганда", code: "ug", continent: "Africa" },
+        { name_en: "Ukraine", name_zh: "乌克兰", name_ja: "ウクライナ", name_fr: "Ukraine", name_es: "Ucrania", name_pt: "Ucrânia", name_ru: "Украина", name_ko: "우크라이나", name_it: "Ucraina", name_da: "Ukraine", name_no: "Ukraina", name_pl: "Ukraina", name_sk: "Ukrajina", name_sr: "Украјина", code: "ua", continent: "Europe" },
+        { name_en: "United Arab Emirates", name_zh: "阿联酋", name_ja: "アラブ首長国連邦", name_fr: "Émirats arabes unis", name_es: "Emiratos Árabes Unidos", name_pt: "Emirados Árabes Unidos", name_ru: "Объединенные Арабские Эмираты", name_ko: "아랍에미리트", name_it: "Emirati Arabi Uniti", name_da: "Forenede Arabiske Emirater", name_no: "De forente arabiske emirater", name_pl: "Zjednoczone Emiraty Arabskie", name_sk: "Spojené arabské emiráty", name_sr: "Уједињени Арапски Емирати", code: "ae", continent: "Asia" },
+        { name_en: "United Kingdom", name_zh: "英国", name_ja: "イギリス", name_fr: "Royaume-Uni", name_es: "Reino Unido", name_pt: "Reino Unido", name_ru: "Великобритания", name_ko: "영국", name_it: "Regno Unito", name_da: "Storbritannien", name_no: "Storbritannia", name_pl: "Wielka Brytania", name_sk: "Spojené kráľovstvo", name_sr: "Уједињено Краљевство", code: "gb", continent: "Europe" },
+        { name_en: "United States", name_zh: "美国", name_ja: "アメリカ合衆国", name_fr: "États-Unis", name_es: "Estados Unidos", name_pt: "Estados Unidos", name_ru: "Соединенные Штаты", name_ko: "미국", name_it: "Stati Uniti", name_da: "USA", name_no: "USA", name_pl: "Stany Zjednoczone", name_sk: "Spojené štáty", name_sr: "Сједињене Државе", code: "us", continent: "North America" },
+        { name_en: "Uruguay", name_zh: "乌拉圭", name_ja: "ウルグアイ", name_fr: "Uruguay", name_es: "Uruguay", name_pt: "Uruguai", name_ru: "Уругвай", name_ko: "우루과이", name_it: "Uruguay", name_da: "Uruguay", name_no: "Uruguay", name_pl: "Urugwaj", name_sk: "Uruguaj", name_sr: "Уругвај", code: "uy", continent: "South America" },
+        { name_en: "Uzbekistan", name_zh: "乌兹别克斯坦", name_ja: "ウズベキスタン", name_fr: "Ouzbékistan", name_es: "Uzbekistán", name_pt: "Uzbequistão", name_ru: "Узбекистан", name_ko: "우즈베키스탄", name_it: "Uzbekistan", name_da: "Usbekistan", name_no: "Usbekistan", name_pl: "Uzbekistan", name_sk: "Uzbekistan", name_sr: "Узбекистан", code: "uz", continent: "Asia" },
+        { name_en: "Venezuela", name_zh: "委内瑞拉", name_ja: "ベネズエラ", name_fr: "Venezuela", name_es: "Venezuela", name_pt: "Venezuela", name_ru: "Венесуэла", name_ko: "베네수엘라", name_it: "Venezuela", name_da: "Venezuela", name_no: "Venezuela", name_pl: "Wenezuela", name_sk: "Venezuela", name_sr: "Венецуела", code: "ve", continent: "South America" },
+        { name_en: "Vietnam", name_zh: "越南", name_ja: "ベトナム", name_fr: "Viêt Nam", name_es: "Vietnam", name_pt: "Vietnã", name_ru: "Вьетнам", name_ko: "베트남", name_it: "Vietnam", name_da: "Vietnam", name_no: "Vietnam", name_pl: "Wietnam", name_sk: "Vietnam", name_sr: "Вијетнам", code: "vn", continent: "Asia" },
+        { name_en: "Yemen", name_zh: "也门", name_ja: "イエメン", name_fr: "Yémen", name_es: "Yemen", name_pt: "Iémen", name_ru: "Йемен", name_ko: "예멘", name_it: "Yemen", name_da: "Yemen", name_no: "Jemen", name_pl: "Jemen", name_sk: "Jemen", name_sr: "Јемен", code: "ye", continent: "Asia" },
+        { name_en: "Zambia", name_zh: "赞比亚", name_ja: "ザンビア", name_fr: "Zambie", name_es: "Zambia", name_pt: "Zâmbia", name_ru: "Замбия", name_ko: "잠비아", name_it: "Zambia", name_da: "Zambia", name_no: "Zambia", name_pl: "Zambia", name_sk: "Zambia", sr: "Замбија", code: "zm", continent: "Africa" },
+        { name_en: "Zimbabwe", name_zh: "津巴布韦", name_ja: "ジンバブエ", name_fr: "Zimbabwe", name_es: "Zimbabue", name_pt: "Zimbabué", name_ru: "Зимбабве", name_ko: "짐바브웨", name_it: "Zimbabwe", name_da: "Zimbabwe", name_no: "Zimbabwe", name_pl: "Zimbabwe", name_sk: "Zimbabwe", name_sr: "Зимбабве", code: "zw", continent: "Africa" }
     ];
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -304,18 +340,10 @@
         const questionText = document.getElementById('question-text');
         const finalScoreText = document.getElementById('final-score');
         const fiftyFiftyBtn = document.getElementById('fifty-fifty');
-        const langSwitcher = document.getElementById('lang-switcher');
+        const langSwitcherSelect = document.getElementById('lang-switcher-select');
 
         // --- Game State ---
         let gameState = {};
-        
-        // --- Translation Data ---
-        const translations = {
-            score: { zh: '得分', en: 'Score' },
-            question: { zh: '这是哪个国家的国旗？', en: "Which country's flag is this?" },
-            flag_alt_guess: { zh: '国旗，请竞猜', en: 'Flag, please guess' },
-            flag_alt_reveal: { zh: '{country}的国旗', en: 'Flag of {country}' },
-        }
 
         // --- Utility Functions ---
         const shuffleArray = (array) => {
@@ -328,37 +356,51 @@
         
         const showScreen = (screenName) => {
             Object.values(screens).forEach(screen => screen.classList.add('hidden'));
-            screens[screenName].classList.remove('hidden');
+            if(screens[screenName]) screens[screenName].classList.remove('hidden');
         };
 
         const setLanguage = (lang) => {
             gameState.language = lang;
-            document.documentElement.lang = lang; // Set lang for the whole document
-            
-            // Update active button style
-            langSwitcher.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.lang === lang);
-            });
+            document.documentElement.lang = lang; 
+            langSwitcherSelect.value = lang;
 
-            // Update all elements with data-lang attributes
-            document.querySelectorAll('[data-lang-zh]').forEach(el => {
-                const key = lang === 'zh' ? 'langZh' : 'langEn';
-                if (el.dataset[key]) {
-                    el.textContent = el.dataset[key];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.dataset.i18n;
+                if (i18n[key] && i18n[key][lang]) {
+                    el.textContent = i18n[key][lang];
                 }
             });
+
+            document.querySelectorAll('[data-i18n-continent]').forEach(el => {
+                const key = el.dataset.i18nContinent;
+                if (i18n.continents[key] && i18n.continents[key][lang]) {
+                    el.textContent = i18n.continents[key][lang];
+                }
+            });
+        };
+        
+        const getBrowserLang = () => {
+            const browserLang = navigator.language || navigator.userLanguage; 
+            const supportedLangs = ['en', 'zh', 'ja', 'fr', 'es', 'pt', 'ru', 'ko', 'it', 'da', 'no', 'pl', 'sk', 'sr'];
+            let langCode = browserLang.split('-')[0];
+            
+            if (browserLang.toLowerCase().startsWith('zh-')) {
+                langCode = 'zh';
+            }
+
+            return supportedLangs.includes(langCode) ? langCode : 'en'; 
         };
 
         // --- Game Logic ---
         const resetGameState = () => {
-            const currentLang = gameState.language || 'zh';
+            const currentLang = gameState.language || getBrowserLang();
             gameState = {
                 questions: [],
                 currentQuestionIndex: 0,
                 score: 0,
                 gameMode: null, 
                 continent: null,
-                questionsTotal: 10,
+                questionsTotal: 0, // Will be set dynamically
                 fiftyFiftyUsed: false,
                 language: currentLang,
             };
@@ -366,6 +408,7 @@
         
         const startGame = (mode, continent = null) => {
             resetGameState();
+            setLanguage(gameState.language);
             gameState.gameMode = mode;
             gameState.continent = continent;
             
@@ -374,28 +417,26 @@
                 sourceCountries = countries.filter(c => c.continent === continent);
             }
             
+            if (sourceCountries.length < 3) {
+                console.error(`Not enough countries in the ${continent} data to start a game.`);
+                showScreen('continent');
+                return;
+            }
+            
             const shuffled = shuffleArray([...sourceCountries]);
-            gameState.questions = shuffled.slice(0, Math.min(shuffled.length, gameState.questionsTotal)).map(correctCountry => {
+            gameState.questionsTotal = shuffled.length; 
+            
+            gameState.questions = shuffled.map(correctCountry => {
                 let wrongOptions = [];
                 const otherCountries = sourceCountries.filter(c => c.code !== correctCountry.code);
                 const shuffledOthers = shuffleArray([...otherCountries]);
-                // Ensure we have at least 2 other options
-                if (shuffledOthers.length >= 2) {
-                    wrongOptions.push(shuffledOthers[0], shuffledOthers[1]);
-                } else { // Handle cases with very few countries in a continent
-                     const generalShuffled = shuffleArray([...countries].filter(c => c.code !== correctCountry.code));
-                     wrongOptions.push(generalShuffled[0], generalShuffled[1]);
-                }
+                wrongOptions.push(shuffledOthers[0], shuffledOthers[1]);
 
                 return {
                     correctAnswer: correctCountry,
                     options: shuffleArray([correctCountry, ...wrongOptions])
                 };
             });
-
-            if (gameState.questions.length < gameState.questionsTotal) {
-                 gameState.questionsTotal = gameState.questions.length;
-            }
 
             fiftyFiftyBtn.disabled = false;
             fiftyFiftyBtn.classList.remove('opacity-50', 'cursor-not-allowed');
@@ -414,25 +455,24 @@
             const currentQuestion = gameState.questions[gameState.currentQuestionIndex];
             const correctAnswer = currentQuestion.correctAnswer;
             const lang = gameState.language;
-            const nameKey = lang === 'zh' ? 'name_zh' : 'name_en';
+            const nameKey = `name_${lang}`;
 
             flagImage.src = `https://flagcdn.com/w320/${correctAnswer.code}.png`;
-            flagImage.alt = translations.flag_alt_guess[lang];
+            flagImage.alt = i18n.flag_alt_guess[lang];
 
             optionsContainer.innerHTML = '';
             currentQuestion.options.forEach(option => {
                 const button = document.createElement('button');
-                button.textContent = option[nameKey];
+                button.textContent = option[nameKey] || option['name_en'];
                 button.dataset.countryCode = option.code;
                 button.className = 'btn-press w-full bg-white border border-gray-300 text-gray-700 font-medium py-3 rounded-lg text-md hover:bg-gray-100 hover:border-gray-400 transition-all duration-200';
                 button.addEventListener('click', handleAnswer);
                 optionsContainer.appendChild(button);
             });
 
-            // Update UI text
             progressText.textContent = `${gameState.currentQuestionIndex + 1} / ${gameState.questionsTotal}`;
-            scoreText.textContent = `${translations.score[lang]}: ${gameState.score}`;
-            questionText.textContent = translations.question[lang];
+            scoreText.textContent = `${i18n.score[lang]}: ${gameState.score}`;
+            questionText.textContent = i18n.question[lang];
         };
         
         const handleAnswer = (e) => {
@@ -441,7 +481,7 @@
             const currentQuestion = gameState.questions[gameState.currentQuestionIndex];
             const correctCode = currentQuestion.correctAnswer.code;
             const lang = gameState.language;
-            const nameKey = lang === 'zh' ? 'name_zh' : 'name_en';
+            const nameKey = `name_${lang}`;
             
             const allButtons = optionsContainer.querySelectorAll('button');
             allButtons.forEach(btn => btn.disabled = true);
@@ -449,7 +489,7 @@
             if (selectedCode === correctCode) {
                 gameState.score += 10;
                 selectedButton.classList.add('correct-answer');
-                scoreText.textContent = `${translations.score[lang]}: ${gameState.score}`;
+                scoreText.textContent = `${i18n.score[lang]}: ${gameState.score}`;
             } else {
                 selectedButton.classList.add('wrong-answer');
                 selectedButton.classList.add('shake');
@@ -460,8 +500,8 @@
                 });
             }
 
-            const countryName = currentQuestion.correctAnswer[nameKey];
-            flagImage.alt = translations.flag_alt_reveal[lang].replace('{country}', countryName);
+            const countryName = currentQuestion.correctAnswer[nameKey] || currentQuestion.correctAnswer['name_en'];
+            flagImage.alt = i18n.flag_alt_reveal[lang].replace('{country}', countryName);
 
             setTimeout(() => {
                 gameState.currentQuestionIndex++;
@@ -475,10 +515,8 @@
         };
 
         // --- Event Listeners ---
-        langSwitcher.addEventListener('click', (e) => {
-            if (e.target.matches('.lang-btn')) {
-                setLanguage(e.target.dataset.lang);
-            }
+        langSwitcherSelect.addEventListener('change', (e) => {
+            setLanguage(e.target.value);
         });
 
         document.getElementById('mode-world').addEventListener('click', () => startGame('world'));
@@ -486,9 +524,7 @@
 
         document.querySelectorAll('.continent-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                // Find the button itself, not a child span
-                const button = e.target.closest('.continent-btn');
-                startGame('continent', button.dataset.continent);
+                startGame('continent', e.target.dataset.continent);
             });
         });
 
@@ -512,18 +548,15 @@
         });
 
         document.getElementById('play-again').addEventListener('click', () => {
-             // Restart the game with the same mode but reset everything else
              startGame(gameState.gameMode, gameState.continent);
         });
-
         document.getElementById('back-to-start-1').addEventListener('click', () => showScreen('start'));
         document.getElementById('back-to-start-2').addEventListener('click', () => showScreen('start'));
         document.getElementById('quit-game').addEventListener('click', endGame);
 
-
         // --- Initial Load ---
         resetGameState();
-        setLanguage('zh'); // Default to Chinese
+        setLanguage(gameState.language);
         showScreen('start');
     });
     </script>
